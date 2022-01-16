@@ -9,8 +9,8 @@
 #           update        Updates the local repository to the latest version.
 #           release       Release local changes to the development branch and
 #                         pushes them to the live version.
-#           dev           Spins up a local development environment.
-#           stable        Spins up the current stable version.
+#           development   Spins up a local development environment.
+#           production    Spins up the current production version.
 #           commit        Will commit and push the local changes on the current
 #                         branch to the remote repository.
 #                         (Takes an extra argument as the commit message.)
@@ -103,9 +103,9 @@ runProduction () {
 ################################################################################
 #
 #   release
-#       Function to release all development changes to stable. GitHub actions
-#       will pick this up and automatically release them on the live server as
-#       well.
+#       Function to release all development changes to production. GitHub
+#       actions will pick this up and automatically release them on the live
+#       server as well.
 #
 ################################################################################
 release () {
@@ -113,13 +113,13 @@ release () {
   # Visit the project directory.
   cd $WORKDIR;
 
-  # Visit the stable branch.
-  git checkout stable
+  # Visit the production branch.
+  git checkout production
 
-  # Merge the developmental changes to the stable branch.
+  # Merge the developmental changes to the production branch.
   git merge development
 
-  # Push the new changes to the stable branch.
+  # Push the new changes to the production branch.
   git push
 }
 
@@ -183,9 +183,9 @@ while [[ $# -gt 0 ]]; do
       shift # Get ready to process the next command.
       ;;
 
-    # Run `stocks stable` to run a local example of the stable release
+    # Run `stocks production` to run a local example of the production release
     # of the Stocks in Motion application.
-    s|stable)
+    p|prod|production)
       runProduction "$argument"
       shift # Get ready to process the next command.
       ;;
