@@ -38,7 +38,7 @@ services:
     # We can use volumes to copy our reverse proxy configuration into Nginx.
     volumes:
       # Use the production configuration to expose only what's necessary.
-      # - ./proxy/production.conf:/etc/nginx/nginx.conf
+      # - ./proxy/production.conf:/etc/nginx/nginx.conf                         - Temporarily commented out to use the static hello world instead.
       - ./proxy/logs:/etc/nginx/error_log.log
 
       # Temporary line to help Nginx serve the static files.
@@ -81,11 +81,6 @@ services:
     expose:
       - "8000"
 
-    # We want to bind the changes inside the container to a local folder so that
-    # we can update the code in real time.
-    volumes:
-      - ./client:/client
-
     # We need the reverse proxy to expose the client publicly, so we need to
     # give it access to the client service.
     networks:
@@ -119,11 +114,6 @@ services:
     # We can expose the api service in the container network.
     expose:
       - "3000"
-
-    # We want to bind the changes inside the container to a local folder so that
-    # we can update the code in real time.
-    volumes:
-      - ./api:/api
 
     # We need the reverse proxy to expose the API publicly, so we need to
     # give it access to the API service. In addition, it needs to be able to
