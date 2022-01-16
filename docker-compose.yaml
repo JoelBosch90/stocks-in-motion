@@ -26,7 +26,7 @@ services:
   #
   ##############################################################################
   proxy:
-    container_name: stocks-in-motion.proxy
+    container_name: stocks-in-motion.proxy.production
 
     # We can use the latest version of Nginx.
     image: nginx:latest
@@ -38,8 +38,11 @@ services:
     # We can use volumes to copy our reverse proxy configuration into Nginx.
     volumes:
       # Use the production configuration to expose only what's necessary.
-      - ./proxy/production.conf:/etc/nginx/nginx.conf
+      # - ./proxy/production.conf:/etc/nginx/nginx.conf
       - ./proxy/logs:/etc/nginx/error_log.log
+
+      # Temporary line to help Nginx serve the static files.
+      - ./client/static:/usr/share/nginx/html
 
     # The proxy needs access to the publicly accessible services.
     depends_on:
@@ -58,7 +61,7 @@ services:
   #
   ##############################################################################
   client:
-    container_name: stocks-in-motion.client
+    container_name: stocks-in-motion.client.production
 
     # We always want to restart when things go wrong.
     restart: always
@@ -95,7 +98,7 @@ services:
   #
   ##############################################################################
   api:
-    container_name: stocks-in-motion.api
+    container_name: stocks-in-motion.api.production
 
     # We always want to restart when things go wrong.
     restart: always
