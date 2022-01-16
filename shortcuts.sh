@@ -121,6 +121,9 @@ release () {
 
   # Push the new changes to the production branch.
   git push
+
+  # Go back to the previous branch.
+  git checkout -
 }
 
 ################################################################################
