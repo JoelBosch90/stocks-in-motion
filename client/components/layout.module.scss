@@ -1,0 +1,20 @@
+/**
+ *  This file contains all styling that is specific to the layout component.
+ */
+
+.layout
+{
+  // Use Flexbox to create a simple single column layout.
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+  // Center the layout on the page.
+  margin: 0 auto;
+
+  // Make sure that our website's content has some space to breathe.
+  padding: 1rem;
+
+  // Keep the width of our layout limited to something that's easy on the eyes.
+  max-width: 50rem;
+}
