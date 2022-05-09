@@ -69,10 +69,10 @@ services:
       dockerfile: development.dockerfile
 
     # Pass on the environment variables to the client service.
-    environment:
-      # Tell the client where to reach the client and the API.
-      - API_URL=http://localhost:8005/api/
-      - CLIENT_URL=http://localhost:8005/
+    # environment:
+    #   # Tell the client where to reach the client and the API.
+    #   - API_URL=http://localhost:8005/api/
+    #   - CLIENT_URL=http://localhost:8005/
 
     # We can expose the client service in the container network.
     expose:
