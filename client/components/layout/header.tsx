@@ -8,15 +8,24 @@ import styles from './header.module.scss'
 interface HeaderProps {}
 
 const Header = ({}: HeaderProps) => {
+
+  const pages = {
+    "/": "Home",
+    "/about": "About",
+  }
+
+  const links = Object.entries(pages).map(([url, name]) => {
+    return (
+      <Link href={ url }>
+        { name }
+      </Link>
+    )
+  })
+
   return (
     <header className={styles.header}>
       <nav>
-        <Link href="/">
-          Home
-        </Link>
-        <Link href="/about">
-          About
-        </Link>
+        { links }
       </nav>
       <hr/>
     </header>
