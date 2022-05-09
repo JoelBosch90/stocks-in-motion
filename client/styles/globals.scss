@@ -1,16 +1,23 @@
+/**
+ *  This file applies global styling for the entire application.
+ */
+
 html,
-body {
+body,
+#__next
+{
+  // Reset padding and margin on the body and html elements.
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+  // We always want to use the full screen width.
+  height: 100%;
+
+  font-family: Oxygen, sans-serif;
 }
 
-a {
+a
+{
   color: inherit;
   text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
 }

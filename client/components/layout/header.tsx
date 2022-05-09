@@ -5,9 +5,11 @@
 import Link from 'next/link'
 import styles from './header.module.scss'
 
-interface HeaderProps {}
+interface HeaderProps {
+  className: string,
+}
 
-const Header = ({}: HeaderProps) => {
+const Header = ({ className }: HeaderProps) => {
 
   const pages = {
     "/": "Home",
@@ -16,14 +18,17 @@ const Header = ({}: HeaderProps) => {
 
   const links = Object.entries(pages).map(([url, name]) => {
     return (
-      <Link href={ url }>
+      <Link
+        key={ url }
+        href={ url }
+      >
         { name }
       </Link>
     )
   })
 
   return (
-    <header className={styles.header}>
+    <header className={`${className} ${styles.header}`}>
       <nav>
         { links }
       </nav>

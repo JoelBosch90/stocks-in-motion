@@ -17,4 +17,23 @@
 
   // Keep the width of our layout limited to something that's easy on the eyes.
   max-width: 50rem;
+
+  // Use the full width available.
+  height: 100%;
+
+  // Include paddings and borders in the calculations of the dimensions.
+  box-sizing: border-box;
+
+  main
+  {
+    // Make sure that the main content takes all space it needs.
+    flex-grow: 1;
+    flex-shrink: 0;
+  }
+
+  .footer
+  {
+    // Make sure that the footer makes way for other elements.
+    flex-shrink: 1;
+  }
 }
