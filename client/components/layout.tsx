@@ -10,6 +10,7 @@
 
 import Header from './layout/header'
 import Footer from './layout/footer'
+import styles from './layout.module.scss'
 
 interface LayoutProps {
   children: JSX.Element | JSX.Element[]
@@ -18,11 +19,11 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <>
+    <div className={styles.layout}>
       <Header />
       { children }
       <Footer />
-    </>
+    </div>
   )
 }
 
