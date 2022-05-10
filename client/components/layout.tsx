@@ -8,6 +8,7 @@
  *    </Layout>
  */
 
+import React, { FunctionComponent } from 'react';
 import Header from './layout/header'
 import Footer from './layout/footer'
 import styles from './layout.module.scss'
@@ -17,7 +18,7 @@ interface LayoutProps {
   home?: boolean
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout : FunctionComponent<LayoutProps> = ({ children }) => {
   return (
     <div className={styles.layout}>
       <Header className={styles.header} />
