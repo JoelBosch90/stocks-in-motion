@@ -18,7 +18,7 @@ const Slider : FunctionComponent<SliderProps> = ({ children, column=false }) => 
   const [scrollAmount, setScrollAmount] = useState<number>(0);
 
   const wrapSlide = (content: JSX.Element) : JSX.Element => (
-    <div>
+    <div className={styles.slide}>
       { content }
     </div>
   )
