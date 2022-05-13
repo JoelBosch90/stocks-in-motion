@@ -31,6 +31,12 @@
     flex-shrink: 0;
   }
 
+  .header
+  {
+    // Don't ever shrink the header.
+    flex-shrink: 0;
+  }
+
   .footer
   {
     // Make sure that the footer makes way for other elements.

@@ -13,11 +13,23 @@ body,
   // We always want to use the full screen width.
   height: 100%;
 
-  font-family: Oxygen, sans-serif;
+  // Install a default font family.
+  font-family: 'Open Sans', sans-serif;
 }
 
 a
 {
+  // Get rid of default link styling.
   color: inherit;
   text-decoration: none;
+
+  // The navbar links don't need to attract that much attention by default.
+  opacity: 0.75;
+
+  &:hover
+  {
+    // We should make sure the navbar links are clearly visible when
+    // hovered. This also help indicate that they're interactive elements.
+    opacity: 1;
+  }
 }

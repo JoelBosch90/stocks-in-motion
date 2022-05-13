@@ -14,6 +14,8 @@ const Header : FunctionComponent<HeaderProps> = ({ className }) => {
 
   const pages = {
     "/": "Home",
+    "/stocks": "Stocks",
+    "/features": "Features",
     "/about": "About",
   }
 

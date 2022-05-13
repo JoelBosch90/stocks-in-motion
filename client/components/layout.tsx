@@ -15,7 +15,6 @@ import styles from './layout.module.scss'
 
 interface LayoutProps {
   children: JSX.Element | JSX.Element[]
-  home?: boolean
 }
 
 const Layout : FunctionComponent<LayoutProps> = ({ children }) => {
