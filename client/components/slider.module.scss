@@ -35,7 +35,7 @@
 
     // Animate the scrolling.
     transition-timing-function: ease-in-out;
-    transition-duration: 350ms;
+    transition-duration: 400ms;
     transition-property: transform;
   }
 
@@ -70,8 +70,16 @@
     &.start { left: 0; }
     &.end { right: 0; }
 
-    // Make the buttons appear on hover.
-    &:hover { opacity: 1; }
+    &:hover
+    {
+      // Make the buttons appear on hover.
+      opacity: 1;
+
+      // Animation the appearance.
+      transition-timing-function: ease-in-out;
+      transition-duration: 200ms;
+      transition-property: opacity;
+    }
   }
 
   &.column

@@ -16,20 +16,23 @@
   // Make sure that the content does not hit the edges of the card.
   padding: 0.5em;
   
-  h4
-  {
-    margin: 0;
-  }
+  // Remove the margins from the title.
+  h4 { margin: 0; }
 
   &.clickable
   {
     // Make sure to show the correct pointer when the card is clickable.
     cursor: pointer;
-    
+
     &:hover
     {
       // Make the card stand out on hover when it is a clickable item.
       filter:brightness(110%);
+
+      // Animate the filter.
+      transition-timing-function: ease-in-out;
+      transition-duration: 200ms;
+      transition-property: filter;
     }
   }
 }

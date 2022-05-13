@@ -31,5 +31,10 @@ a
     // We should make sure the navbar links are clearly visible when
     // hovered. This also help indicate that they're interactive elements.
     opacity: 1;
+
+    // Animate the opacity.
+    transition-timing-function: ease-in-out;
+    transition-duration: 200ms;
+    transition-property: opacity;
   }
 }
