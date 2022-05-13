@@ -1,6 +1,6 @@
 /**
- *  This is a simple page that briefly explains the meaning and use cases of
- *  this application.
+ *  This is a simple page that briefly explains the reasons behind building this
+ *  website.
  */
 
 import type { NextPage } from 'next'
@@ -14,9 +14,11 @@ const About : NextPage = () => {
         <title>About</title>
       </Head>
       <Layout>
-        <h1>Title</h1>
+        <h1>About</h1>
         <p>Some text ...</p>
-        <h2>Subtitle</h2>
+        <h2>Technology</h2>
+        <p>Some more text ...</p>
+        <h2>Content</h2>
         <p>Some more text ...</p>
       </Layout>
     </>

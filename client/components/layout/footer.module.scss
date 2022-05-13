@@ -15,4 +15,10 @@
 
   // Center the itmms in the center.
   align-items: center;
+
+  small
+  {
+    // The footer text doesn't need to stand out.
+    opacity: 0.75;
+  }
 }
