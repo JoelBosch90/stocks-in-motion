@@ -1,0 +1,35 @@
+/**
+ *  This file contains all styling that is specific to the stock card
+ *  component.
+ */
+
+.card
+{
+  // Provide some temporary defaults for testing purposes.
+  width: 8em;
+  height: 5em;
+  background-color: #ccc;
+
+  // Add a subtly rounded border for a friendlier look.
+  border-radius: 0.25em;
+
+  // Make sure that the content does not hit the edges of the card.
+  padding: 0.5em;
+  
+  h4
+  {
+    margin: 0;
+  }
+
+  &.clickable
+  {
+    // Make sure to show the correct pointer when the card is clickable.
+    cursor: pointer;
+    
+    &:hover
+    {
+      // Make the card stand out on hover when it is a clickable item.
+      filter:brightness(110%);
+    }
+  }
+}

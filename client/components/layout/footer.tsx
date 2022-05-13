@@ -2,12 +2,19 @@
  *  Component that creates a footer for the common website layout.
  */
 
-interface FooterProps {}
+import React, { FunctionComponent } from 'react';
+import styles from './footer.module.scss'
 
-const Footer = ({}: FooterProps) => {
+interface FooterProps {
+  className: string,
+}
+
+const Footer : FunctionComponent<FooterProps> = ({ className }) => {
   return (
-    <footer>
-
+    <footer className={`${className} ${styles.footer}`}>
+      <small>
+        Copyright © 2022 Bosch & Bosch. All rights reserved.
+      </small>
     </footer>
   )
 }

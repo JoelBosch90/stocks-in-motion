@@ -1,0 +1,24 @@
+/**
+ *  This file contains all styling that is specific to the layout footer
+ *  component.
+ */
+
+.footer
+{
+  // Use Flexbox to create a simple column layout.
+  display: flex;
+  flex-direction: column;
+
+  // Keep some distance from other elements on the screen and from the edge of
+  // the screen.
+  padding: 1rem 0;
+
+  // Center the itmms in the center.
+  align-items: center;
+
+  small
+  {
+    // The footer text doesn't need to stand out.
+    opacity: 0.75;
+  }
+}
