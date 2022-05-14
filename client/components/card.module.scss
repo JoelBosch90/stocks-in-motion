@@ -30,8 +30,7 @@
       filter:brightness(110%);
 
       // Animate the filter.
-      transition-timing-function: ease-in-out;
-      transition-duration: 200ms;
+      transition-duration: var(--animation-speed-quick);
       transition-property: filter;
     }
   }
