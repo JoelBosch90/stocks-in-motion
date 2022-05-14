@@ -29,8 +29,8 @@ const Slider : FunctionComponent<SliderProps> = ({ children, column=false }) => 
 
   const scroll = (direction: string) : void => {
     switch(direction) {
-      case 'back': setScrollAmount((amount:number) : number => Math.min(amount + scrollContainerWidth(), 0)); break
-      case 'forward': setScrollAmount((amount:number) : number => Math.max(amount - scrollContainerWidth(), -maxScrollAmount())); break
+      case 'back': setScrollAmount((amount:number) : number => Math.min(amount + sliderWidth(), 0)); break
+      case 'forward': setScrollAmount((amount:number) : number => Math.max(amount - sliderWidth(), -maxScrollAmount())); break
       default: return
     }
   }
