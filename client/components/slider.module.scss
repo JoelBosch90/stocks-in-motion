@@ -34,8 +34,7 @@
     transform: translateX(var(--scrollAmount));
 
     // Animate the scrolling.
-    transition-timing-function: ease-in-out;
-    transition-duration: 400ms;
+    transition-duration: var(--animation-speed-slow);
     transition-property: transform;
   }
 
@@ -76,8 +75,7 @@
       opacity: 1;
 
       // Animation the appearance.
-      transition-timing-function: ease-in-out;
-      transition-duration: 200ms;
+      transition-duration: var(--animation-speed-quick);
       transition-property: opacity;
     }
   }
