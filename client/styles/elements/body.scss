@@ -1,0 +1,13 @@
+/**
+ *  This file applies global styling for the body tag.
+ */
+
+body
+{
+  // Install a default font family.
+  font-family: var(--text-font);
+
+  // Install default colors.
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
