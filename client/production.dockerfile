@@ -1,7 +1,5 @@
 # Get a light NodeJS base image.
 FROM node:17-alpine as base
-
-# Create the working directory for the base.
 WORKDIR /base
 
 # Copy the package files that contain our dependencies.
@@ -16,12 +14,10 @@ COPY . .
 
 # Time to build the production image.
 FROM base AS build
+WORKDIR /build
 
 # We can switch to production mode.
 ENV NODE_ENV production
-
-# Create the working directory for the build.
-WORKDIR /build
 
 # Copy over the base files.
 COPY --from=base /base ./
@@ -32,12 +28,10 @@ RUN npm run build
 
 # Start a fresh release image.
 FROM node:17-alpine
+WORKDIR /release
 
 # We can switch to production mode.
 ENV NODE_ENV production
-
-# Create the working directory for the release.
-WORKDIR /release
 
 # Copy all files we need, but only the files that we need.
 COPY --from=build /build/package*.json ./
