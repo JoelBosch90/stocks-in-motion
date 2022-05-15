@@ -27,10 +27,15 @@ const Slider : FunctionComponent<SliderProps> = ({ children, column=false }) => 
   const scrollContainerWidth = () : number => scrollContainerRef?.current ? scrollContainerRef?.current['clientWidth'] : 0
   const maxScrollAmount = () : number => scrollContainerWidth() - sliderWidth()
 
+  // It is better if users still see a slide that was shown before scrolling so
+  // that they know that nothing was skipped. Hence we only step by 80% of the
+  // full slider width.
+  const scrollStep = () : number => Math.round(0.8 * sliderWidth());
+
   const scroll = (direction: string) : void => {
     switch(direction) {
-      case 'back': setScrollAmount((amount:number) : number => Math.min(amount + sliderWidth(), 0)); break
-      case 'forward': setScrollAmount((amount:number) : number => Math.max(amount - sliderWidth(), -maxScrollAmount())); break
+      case 'back': setScrollAmount((amount:number) : number => Math.min(amount + scrollStep(), 0)); break
+      case 'forward': setScrollAmount((amount:number) : number => Math.max(amount - scrollStep(), -maxScrollAmount())); break
       default: return
     }
   }
