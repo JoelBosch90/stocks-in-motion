@@ -3,28 +3,28 @@
  */
 :root
 {
-  // Set a common hue. This makes sure that all colors fit together well.
-  --hue: 75%;
+  // Set a common saturation. This makes sure that all colors fit together well.
+  --saturation: 75%;
 
   // Set a common lightness. We can use this for the regular colors to make sure
   // they fit well together. We should only deviate for white and black.
   --lightness: 50%;
 
   // Determine a common palette of colors.
-  --red:      hsl(0, var(--hue), 50%);
-  --orange:   hsl(30, var(--hue), 50%);
-  --yellow:   hsl(50, var(--hue), 50%);
-  --green:    hsl(125, var(--hue), 50%);
-  --turquoise:hsl(175, var(--hue), 50%);
-  --blue:     hsl(210, var(--hue), 50%);
-  --purple:   hsl(285, var(--hue), 50%);
-  --pink:     hsl(345, var(--hue), 50%);
+  --red:      hsl(0, var(--saturation), var(--lightness));
+  --orange:   hsl(30, var(--saturation), var(--lightness));
+  --yellow:   hsl(50, var(--saturation), var(--lightness));
+  --green:    hsl(125, var(--saturation), var(--lightness));
+  --turquoise:hsl(175, var(--saturation), var(--lightness));
+  --blue:     hsl(210, var(--saturation), var(--lightness));
+  --purple:   hsl(285, var(--saturation), var(--lightness));
+  --pink:     hsl(345, var(--saturation), var(--lightness));
 
   // This black has the slightly hint of red to give the app a warmer feeling.
-  --black:    hsl(0, var(--hue), 1%);
+  --black:    hsl(0, var(--saturation), 1%);
 
   // Use a light hint of yellow in the white for good contrast with the black.
-  --white:    hsl(50, var(--hue), 99%);
+  --white:    hsl(50, var(--saturation), 99%);
 
   // Set the branding colors.
   --background-color: var(--black);
