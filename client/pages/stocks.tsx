@@ -15,7 +15,7 @@ const Stocks : NextPage = () => {
   const router = useRouter()
 
   // Create some temporary example elements.
-  const cards = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'GOOG', 'TSLA', 'BRK.B', 'JNJ', 'UNH', 'FD', 'NVDA', 'XOM', 'PG', 'JPM', 'V', 'CVX', 'HD', 'PFE', 'MA', 'ABBV']
+  const cards = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'GOOG', 'TSLA', 'BRK.B', 'JNJ', 'UNH', 'FD', 'NVDA', 'XOM', 'PG', 'JPM', 'V', 'CVX', 'HD', 'PFE', 'MA', 'ABBV', 'KO', 'BAC', 'AVGO', 'PEP', 'LLY']
     .map((name:string) : JSX.Element => <Card name={name} key={name} onClick={() => router.push(`/stocks/${name}`)} />)
 
   return (
