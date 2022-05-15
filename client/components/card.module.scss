@@ -8,7 +8,8 @@
   // Provide some temporary defaults for testing purposes.
   width: 8em;
   height: 5em;
-  background-color: #ccc;
+  background-color: var(--primary-accent);
+  color: var(--text-color);
 
   // Add a subtly rounded border for a friendlier look.
   border-radius: 0.25em;
@@ -26,12 +27,13 @@
 
     &:hover
     {
-      // Make the card stand out on hover when it is a clickable item.
-      filter:brightness(110%);
+      // Make the card stand out on hover to show that it is an interactive
+      // element.
+      background-color: var(--secondary-accent);
 
       // Animate the filter.
-      transition-duration: var(--animation-speed-quick);
-      transition-property: filter;
+      transition-duration: var(--animation-speed-slow);
+      transition-property: background-color;
     }
   }
 }

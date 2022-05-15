@@ -1,0 +1,14 @@
+/**
+ *  This file sets all properties related to fonts.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Alegreya&family=Nunito&display=swap');
+
+:root
+{
+  --text-font: Nunito, sans-serif;
+  --text-color: var(--white);
+
+  --title-font: Alegreya, serif;
+  --title-color: var(--secondary-accent);
+}

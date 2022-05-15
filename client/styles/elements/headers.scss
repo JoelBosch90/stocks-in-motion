@@ -1,0 +1,9 @@
+/**
+ *  This file applies global styling for header tags.
+ */
+
+h1, h2, h3
+{
+  font-family: var(--title-font);
+  color: var(--title-color);
+}
