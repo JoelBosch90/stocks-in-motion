@@ -18,18 +18,4 @@
     padding: 0 1rem;
     gap: 1rem;
   }
-
-  hr
-  {
-    // We won't be using the regular border on this element.
-    border: 0;
-
-    // Instead, we'll use a background that's a single pixel high to immitate a
-    // border. This allows us to use a linear gradient instead.
-    background: linear-gradient(to right, var(--background-color) 0%, var(--primary-accent) 50%, var(--background-color) 100%);
-    height: 1px;
-
-    // We don't want this line to span the full width of the navigation menu.
-    width: 50%;
-  }
 }
