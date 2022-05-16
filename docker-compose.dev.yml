@@ -60,9 +60,6 @@ services:
   client:
     container_name: stocks-in-motion.client.development
 
-    # We always want to restart when things go wrong.
-    restart: always
-
     # We want to build from the development dockerfile in the client directory.
     build:
       context: ./client/
@@ -96,9 +93,6 @@ services:
   # ##############################################################################
   # database:
   #   container_name: stocks-in-motion.database.development
-
-  #   # We always want to restart when things go wrong.
-  #   restart: always
 
   #   # Get the Postgres image from Docker Hub.
   #   image: postgres:14.2-alpine
