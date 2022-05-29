@@ -47,7 +47,7 @@ services:
     # The proxy needs access to the publicly accessible services.
     depends_on:
       - client
-      # - api
+      - api
 
     # We need access to all the services that should be exposed (partly)
     # publicly.

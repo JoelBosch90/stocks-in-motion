@@ -6,3 +6,9 @@
 /api/.vs
 /api/api/bin
 /api/api/obj
+/api/bin/Debug/net6.0
+/api/obj
+/bin/Debug
+/collector/.vs
+/collector/obj
+/obj

@@ -4,16 +4,16 @@ namespace api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class StocksController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+        "AEX", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<StocksController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public StocksController(ILogger<StocksController> logger)
         {
             _logger = logger;
         }
