@@ -4,3 +4,5 @@
 
 /.vs
 /api/.vs
+/api/api/bin
+/api/api/obj
