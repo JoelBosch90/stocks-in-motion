@@ -34,7 +34,7 @@ jobs:
 
     # This command checks out our repository so that we can access the latest
     # files.
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     # First, we need to make sure that the virtual private server is updated to
     # the latest version of the repository.
