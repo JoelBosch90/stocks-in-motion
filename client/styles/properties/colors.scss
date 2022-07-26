@@ -11,20 +11,35 @@
   --lightness: 50%;
 
   // Determine a common palette of colors.
-  --red:      hsl(0, var(--saturation), var(--lightness));
-  --orange:   hsl(30, var(--saturation), var(--lightness));
-  --yellow:   hsl(50, var(--saturation), var(--lightness));
-  --green:    hsl(125, var(--saturation), var(--lightness));
-  --turquoise:hsl(175, var(--saturation), var(--lightness));
-  --blue:     hsl(210, var(--saturation), var(--lightness));
-  --purple:   hsl(285, var(--saturation), var(--lightness));
-  --pink:     hsl(345, var(--saturation), var(--lightness));
+  --hue-red: 0;
+  --red: hsl(var(--hue-red), var(--saturation), var(--lightness));
+
+  --hue-orange: 30;
+  --orange: hsl(var(--hue-orange), var(--saturation), var(--lightness));
+
+  --hue-yellow: 50;
+  --yellow: hsl(var(--hue-yellow), var(--saturation), var(--lightness));
+
+  --hue-green: 125;
+  --green: hsl(var(--hue-green), var(--saturation), var(--lightness));
+
+  --hue-turquoise: 175;
+  --turquoise: hsl(var(--hue-turquoise), var(--saturation), var(--lightness));
+
+  --hue-blue: 210;
+  --blue: hsl(var(--hue-blue), var(--saturation), var(--lightness));
+
+  --hue-purple: 285;
+  --purple: hsl(var(--hue-purple), var(--saturation), var(--lightness));
+
+  --hue-pink: 345;
+  --pink: hsl(var(--hue-pink), var(--saturation), var(--lightness));
 
   // This black has the slightly hint of red to give the app a warmer feeling.
-  --black:    hsl(0, var(--saturation), 1%);
+  --black: hsl(0, var(--saturation), 0.25%);
 
   // Use a light hint of yellow in the white for good contrast with the black.
-  --white:    hsl(50, var(--saturation), 99%);
+  --white: hsl(50, var(--saturation), 99.75%);
 
   // Set the branding colors.
   --background-color: var(--black);
