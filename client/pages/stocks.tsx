@@ -9,14 +9,28 @@ import Head from 'next/head'
 import Layout from '../components/layout'
 import Slider from '../components/slider'
 import Card from '../components/card'
+import { useEffect, useState } from 'react';
 
 const Stocks : NextPage = () => {
 
   const router = useRouter()
+  const [tickers, setTickers] = useState([])
 
-  // Create some temporary example elements.
-  const cards = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'GOOG', 'TSLA', 'BRK.B', 'JNJ', 'UNH', 'FD', 'NVDA', 'XOM', 'PG', 'JPM', 'V', 'CVX', 'HD', 'PFE', 'MA', 'ABBV', 'KO', 'BAC', 'AVGO', 'PEP', 'LLY']
-    .map((name:string) : JSX.Element => <Card name={name} key={name} onClick={() => router.push(`/stocks/${name}`)} />)
+  // Get the tickers from the API.
+  useEffect(() => {
+    fetch('/api/stocks')
+      .then(response => response.json())
+      .then(setTickers)
+  }, [setTickers])
+
+  // Create a card for each ticker.
+  const cards = tickers.map((name:string) : JSX.Element =>
+    <Card
+      name={name}
+      key={name}
+      onClick={() => router.push(`/stocks/${name}`)}
+    />
+  )
 
   return (
     <>
