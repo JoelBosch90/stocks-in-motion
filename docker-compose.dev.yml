@@ -44,7 +44,7 @@ services:
     # The proxy needs access to the publicly accessible services.
     depends_on:
       - client
-      # - api
+      - api
 
     # We need access to all the services that should be exposed (partly)
     # publicly.
@@ -65,6 +65,15 @@ services:
       context: ./client/
       dockerfile: development.dockerfile
 
+    # Pass on the environment variables to the client service.
+    environment:
+    
+      # Tell the client what port to use.
+      - PORT=8000
+
+      # Tell React what port to connect to for hot reloading.
+      - WDS_SOCKET_PORT=8005
+
     # We can expose the client service in the container network.
     expose:
       - "80"
@@ -79,32 +88,40 @@ services:
     networks:
       - proxied
 
-  # ##############################################################################
-  # #
-  # # Database
-  # #   This is the service that serves the database.
-  # #
-  # ##############################################################################
-  # database:
-  #   container_name: stocks-in-motion.database.development
+  ##############################################################################
+  #
+  # Database
+  #   This is the service that serves the database.
+  #
+  ##############################################################################
+  database:
+    container_name: stocks-in-motion.database.development
 
-  #   # Get the Postgres image from Docker Hub.
-  #   image: postgres:14.2-alpine
+    # We always want to restart when things go wrong.
+    restart: always
 
-  #   # Pass on the environment variables to the database service.
-  #   environment:
-  #    - POSTGRES_PASSWORD=''
-  #    - POSTGRES_USER=''
-  #    - POSTGRES_DB=''
-  #    - POSTGRES_INITDB_ARGS=''
+    # Get the Postgres image from Docker Hub.
+    image: postgres:14.2-alpine
 
-  #   # We can expose the database service in the container network.
-  #   expose:
-  #     - "8080"
+    # Pass on the environment variables to the database service.
+    environment:
+     - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+     - POSTGRES_USER=${DATABASE_USERNAME}
+     - POSTGRES_DB='stocks'
+     - PGDATA=/var/lib/postgresql/data/pgdata
 
-  #   # The database does not have to communicate with our proxy.
-  #   networks:
-  #     - protected
+    # We need to designate a volume on physical disk to persist data between
+    # restarts.
+    volumes:
+      - ./database:/var/lib/postgresql/data
+
+    # Make sure that we expose the database on the appropriate port.
+    ports: 
+      - 5432:5432
+
+    # The database does not have to communicate with our proxy.
+    networks:
+      - protected
 
   ##############################################################################
   #
@@ -117,6 +134,10 @@ services:
 
     # We always want to restart when things go wrong.
     restart: always
+
+    # Make sure that the API is running in development mode.
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
 
     # We want to build from the development dockerfile in the API directory.
     build:
@@ -131,6 +152,10 @@ services:
     # we can update the code in real time.
     volumes:
       - ./api:/api
+
+    # The api needs access to the database.
+    depends_on:
+      - database
 
     # We need the reverse proxy to expose the API publicly, so we need to
     # give it access to the API service. In addition, it needs to be able to

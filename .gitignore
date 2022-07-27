@@ -13,3 +13,4 @@
 /collector/obj
 /obj
 /DataAccesLayer/obj
+.env
