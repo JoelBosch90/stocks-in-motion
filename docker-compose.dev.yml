@@ -87,15 +87,17 @@ services:
     # give it access to the client service.
     networks:
       - proxied
+      - protected
 
   ##############################################################################
   #
-  # Database
-  #   This is the service that serves the database.
+  # PostgreSQL Database
+  #   This is the service that serves the main database that houses the raw data
+  #   of the historic stock prices.
   #
   ##############################################################################
-  database:
-    container_name: stocks-in-motion.database.development
+  stockpricedb:
+    container_name: stocks-in-motion.stockpricedb.development
 
     # We always want to restart when things go wrong.
     restart: always
@@ -115,9 +117,12 @@ services:
     volumes:
       - ./database:/var/lib/postgresql/data
 
-    # Make sure that we expose the database on the appropriate port.
-    ports: 
-      - 5432:5432
+    # Use the default port for this service.
+    command: -p 80
+
+    # We can expose this database service in the container network.
+    expose:
+      - "80"
 
     # The database does not have to communicate with our proxy.
     networks:
