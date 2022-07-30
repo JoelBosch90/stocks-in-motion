@@ -15,6 +15,8 @@ RUN dotnet build "api.csproj" -c Release -o /app/build
 FROM mcr.microsoft.com/dotnet/core/sdk:6.0 AS setup
 ENV PATH $PATH:/root/.dotnet/tools
 RUN dotnet tool install --global dotnet-ef --version 6.0.7
+RUN dotnet-ef migrations add CreateDatabase
+RUN dotnet-ef migrations add LimitStrings
 RUN dotnet-ef database update
 
 FROM build AS publish
