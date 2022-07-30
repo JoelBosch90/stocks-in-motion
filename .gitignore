@@ -2,12 +2,14 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+/stockpricedb
 /.vs
 /api/.vs
 /api/api/bin
 /api/api/obj
 /api/bin/Debug/net6.0
 /api/obj
+/api/client
 /bin/Debug
 /collector/.vs
 /collector/obj

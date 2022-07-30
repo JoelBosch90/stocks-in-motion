@@ -115,7 +115,7 @@ services:
     # We need to designate a volume on physical disk to persist data between
     # restarts.
     volumes:
-      - ./database:/var/lib/postgresql/data
+      - ./stockpricedb:/var/lib/postgresql/data
 
     # Use the default port for this service.
     command: -p 80
