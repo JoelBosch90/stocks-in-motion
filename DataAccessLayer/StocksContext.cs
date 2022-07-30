@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace DataAccesLayer
+namespace DataAccessLayer
 {
     public class StocksContext : DbContext 
     {
