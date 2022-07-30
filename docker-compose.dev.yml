@@ -130,6 +130,42 @@ services:
 
   ##############################################################################
   #
+  # PostgreSQL UI
+  #   This is the service that gives a visual user interface to the PostgreSQL
+  #   database.
+  #
+  ##############################################################################
+  pgadmin:
+    container_name: stocks-in-motion.pgadmin.development
+
+    # We always want to restart when things go wrong.
+    restart: always
+
+    # Get the PostgreSQL admin image from Docker Hub.
+    image: dpage/pgadmin4:latest
+
+    # Pass on the environment variables to the ui service.
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+      - SCRIPT_NAME=/pgadmin
+
+    # The PostgreSQL UI needs a mounted volume for persistent storage of the
+    # connection details.
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+
+    # Publicly expose the PostgreSQL UI.
+    ports:
+      - 80:80
+
+    # The interface needs to be both public and needs access to the database.
+    networks:
+      - proxied
+      - protected
+
+  ##############################################################################
+  #
   # API
   #   This is the service that serves all server-side requests.
   #
