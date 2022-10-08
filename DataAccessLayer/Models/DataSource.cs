@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DataAccessLayer.Models
 {
-    public class StocksAPI
+    public class DataSource
     {
         public long Id { get; set; }
         public DateTime Added { get; set; }
