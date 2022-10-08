@@ -7,6 +7,7 @@ namespace DataAccessLayer.Models
         #region DbSets
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<DataSource> DataSources { get; set; }
+        #endregion
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -19,7 +20,5 @@ namespace DataAccessLayer.Models
                 optionsBuilder.UseNpgsql($"host={host};database={database};user id={userID};password={password};");
             }
         }
-
-        
     }
 }
