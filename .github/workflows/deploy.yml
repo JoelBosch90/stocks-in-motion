@@ -60,4 +60,4 @@ jobs:
         KEY: ${{ secrets.KEY }}
         script: |
           cd /var/www/stocks-in-motion
-          docker-compose up -d --build
+          docker-compose -f docker-compose.yml up -d --build

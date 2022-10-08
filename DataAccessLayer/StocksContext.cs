@@ -6,7 +6,7 @@ namespace DataAccessLayer.Models
     public class StocksContext : DbContext
     {
         public DbSet<Stock> Stocks { get; set; }
-        public DbSet<StocksAPI> StocksAPIs { get; set; }
+        public DbSet<DataSource> DataSources { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

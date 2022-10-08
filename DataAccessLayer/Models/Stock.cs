@@ -13,7 +13,7 @@ namespace DataAccessLayer.Models
         public string Ticker { get; set; }
         public string Currency { get; set; }
         public int Price { get; set; }
-        public StocksAPI Source { get; set; }
+        public DataSource Source { get; set; }
         public DateTime Moment { get; set; }
     }
 }
