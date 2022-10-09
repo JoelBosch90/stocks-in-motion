@@ -4,10 +4,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "collector", "collector\collector.csproj", "{BDE7C7AD-6734-4C40-916C-A2B98BB3FF01}"
+	ProjectSection(ProjectDependencies) = postProject
+		{436A3C10-1311-46A8-9774-65908582A6AF} = {436A3C10-1311-46A8-9774-65908582A6AF}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api", "api\api.csproj", "{290EF260-FF3B-43E1-9F2C-CF7822312D31}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{24100FF6-BBF4-4436-8A02-6EBD6E98AD45}"
+	ProjectSection(ProjectDependencies) = postProject
+		{290EF260-FF3B-43E1-9F2C-CF7822312D31} = {290EF260-FF3B-43E1-9F2C-CF7822312D31}
+		{436A3C10-1311-46A8-9774-65908582A6AF} = {436A3C10-1311-46A8-9774-65908582A6AF}
+		{BDE7C7AD-6734-4C40-916C-A2B98BB3FF01} = {BDE7C7AD-6734-4C40-916C-A2B98BB3FF01}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{436A3C10-1311-46A8-9774-65908582A6AF}"
 EndProject

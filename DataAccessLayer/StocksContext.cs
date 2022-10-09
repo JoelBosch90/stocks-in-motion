@@ -13,11 +13,12 @@ namespace DataAccessLayer.Models
             if (!optionsBuilder.IsConfigured)
             {
                 string host = "stockpricedb";
-                string userID = "123test";
-                string password = "test123";
-                string database = "stocksinmotion";
+                int port = 80;
+                string userID = "local";
+                string password = "secret";
+                string database = "stockpricedb";
 
-                optionsBuilder.UseNpgsql($"host={host};database={database};user id={userID};password={password};");
+                optionsBuilder.UseNpgsql($"Host={host};Port={port};Database={database};User ID={userID};Password={password};");
             }
         }
     }

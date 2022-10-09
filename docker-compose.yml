@@ -62,7 +62,7 @@ services:
   #
   ##############################################################################
   stockpricedb:
-    container_name: stocks-in-motion.stockpricedb.development
+    container_name: stocks-in-motion.stockpricedb.production
 
     # We always want to restart when things go wrong.
     restart: always
