@@ -17,5 +17,7 @@ namespace DataAccessLayer.Models
 
         [StringLength(2048)]
         public string Key { get; set; }
+
+        public List<Stock> Stocks { get; }
     }
 }

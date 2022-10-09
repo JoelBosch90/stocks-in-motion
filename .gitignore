@@ -8,12 +8,13 @@
 /api/.vs
 /api/api/bin
 /api/api/obj
-/api/bin/Debug/net6.0
+/api/bin/
 /api/obj
 /api/client
-/bin/Debug
+/bin
 /collector/.vs
 /collector/obj
+/collector/bin
 /obj
 /DataAccessLayer/obj
 .env

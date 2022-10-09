@@ -7,6 +7,39 @@ services:
 
   ##############################################################################
   #
+  # Proxy
+  #   We use Nginx as a reverse proxy to direct requests to the ports of the
+  #   correct services. This way we can hide the application's inner network.
+  #
+  ##############################################################################
+  proxy:
+    container_name: stocks-in-motion.proxy.development
+
+    # We can use volumes to copy our reverse proxy configuration into Nginx.
+    volumes:
+      # Use the development configuration to expose only what's necessary.
+      - ./proxy/development.conf:/etc/nginx/nginx.conf
+
+  ##############################################################################
+  #
+  # PostgreSQL Database
+  #   This is the service that serves the main database that houses the raw data
+  #   of the historic stock prices.
+  #
+  ##############################################################################
+  stockpricedb:
+    container_name: stocks-in-motion.stockpricedb.development
+
+    # We want to expose at port 8006.
+    ports:
+      - 8006:80
+
+    # The database does not have to communicate with our proxy.
+    networks:
+      - proxied
+
+  ##############################################################################
+  #
   # Client
   #   This is the service that serves all client-side files.
   #

@@ -1,3 +1,4 @@
+using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -22,6 +23,14 @@ namespace api.Controllers
         public IEnumerable<string> Get()
         {
             return Summaries;
+        }
+
+        [HttpGet("{symbol}")]
+        public Stock? Get(string symbol)
+        {
+            using var context = new StocksContext();
+
+            return context.Stocks.FirstOrDefault(stock => stock.Ticker == symbol);
         }
     }
 }
