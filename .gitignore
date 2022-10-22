@@ -4,18 +4,13 @@
 
 /stockpricedb
 /pgadmin
-/.vs
-/api/.vs
-/api/api/bin
-/api/api/obj
-/api/bin/
-/api/obj
-/api/client
-/bin
-/collector/.vs
-/collector/obj
-/collector/bin
-/obj
-/DataAccessLayer/obj
+
 .env
 .vscode
+
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+
+**/*.user
