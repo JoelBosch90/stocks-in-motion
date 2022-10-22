@@ -140,6 +140,14 @@ services:
     expose:
       - "80"
 
+    # Pass on the environment variables to the API service.
+    environment:
+     - DATABASE_PORT=80
+     - DATABASE_HOST=stockpricedb
+     - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+     - DATABASE_USERNAME=${DATABASE_USERNAME}
+     - DATABASE_NAME=${DATABASE_NAME}
+
     # The api needs access to the database.
     depends_on:
       - stockpricedb

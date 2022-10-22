@@ -10,14 +10,14 @@ namespace DataAccessLayer.Models
         #endregion
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            string host = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
+            int port = Int32.Parse(Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "80");
+            string? database = Environment.GetEnvironmentVariable("DATABASE_NAME");
+            string? userID = Environment.GetEnvironmentVariable("DATABASE_USERNAME");
+            string? password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD");
+
             if (!optionsBuilder.IsConfigured)
             {
-                string host = "stockpricedb";
-                int port = 80;
-                string userID = "local";
-                string password = "secret";
-                string database = "stockpricedb";
-
                 optionsBuilder.UseNpgsql($"Host={host};Port={port};Database={database};User ID={userID};Password={password};");
             }
         }
