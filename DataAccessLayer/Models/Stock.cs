@@ -12,12 +12,18 @@ namespace DataAccessLayer.Models
         public string? Name { get; set; }
 
         [StringLength(5)]
-        public string Ticker { get; set; }
+        public string Symbol { get; set; }
 
         public string Currency { get; set; }
 
-        public int Price { get; set; }
+        public int Open { get; set; }
+
+        public int High { get; set; }
+
+        public int Low { get; set; }
+
+        public int Close { get; set; }
+
         public DataSource Source { get; set; }
-        public DateTime Moment { get; set; }
     }
 }

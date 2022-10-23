@@ -11,14 +11,14 @@ namespace DataAccessLayer.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string host = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
-            int port = Int32.Parse(Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "80");
+            int port = Int32.Parse(Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "8006");
             string? database = Environment.GetEnvironmentVariable("DATABASE_NAME");
             string? userID = Environment.GetEnvironmentVariable("DATABASE_USERNAME");
             string? password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD");
 
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseNpgsql($"Host={host};Port={port};Database={database};User ID={userID};Password={password};");
+                optionsBuilder.UseNpgsql($"Host={host};Port={port};Database={database};User ID={userID};Password={password}");
             }
         }
     }
