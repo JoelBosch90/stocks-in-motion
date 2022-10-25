@@ -24,6 +24,6 @@ namespace DataAccessLayer.Models
 
         public int Close { get; set; }
 
-        public DataSource Source { get; set; }
+        public DataSource ?Source { get; set; }
     }
 }
