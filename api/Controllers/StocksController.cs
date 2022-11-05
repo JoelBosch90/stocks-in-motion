@@ -38,20 +38,17 @@ namespace api.Controllers
 
             using StocksContext context = new();
 
-            try
-            {
-                return Ok(context.Stocks.Single(stock => stock.Symbol == symbol));
-            }
-            catch (InvalidOperationException)
-            {
-                Stock? stock = await RetrieveStock(symbol);
+            Stock? stock = context.Stocks.SingleOrDefault(stock => stock.Symbol == symbol);
 
-                if (stock is null) return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            if(stock == null)
+            {
+                stock = await RetrieveStock(symbol);
+
+                if (stock == null) return new StatusCodeResult(StatusCodes.Status500InternalServerError);
 
                 StoreStock(stock);
-
-                return Ok(stock);
             }
+            return Ok(stock);
         }
 
         protected async Task<Stock?> RetrieveStock(string symbol)
@@ -73,9 +70,11 @@ namespace api.Controllers
 
             var stock1 = json["historical"][0];
 
+            DateTime added = new DateTime(DateTime.Parse((string)stock1["date"]).Ticks, DateTimeKind.Utc);
+
             return new Stock
             {
-                Added = DateTime.Parse((string)stock1["date"]),
+                Added = added,
                 Symbol = (string)json["symbol"],
                 Currency = "USD",
                 Open = JsonDollarsToCents(stock1["open"]),
@@ -95,6 +94,7 @@ namespace api.Controllers
         {
             using StocksContext context = new();
             context.Stocks.Add(stock);
+            context.SaveChanges();
         }
     }
 }
