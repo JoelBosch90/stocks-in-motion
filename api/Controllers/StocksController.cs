@@ -1,7 +1,5 @@
 using DataAccessLayer.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.InteropServices;
 using System.Text.Json.Nodes;
 
 namespace api.Controllers
@@ -10,7 +8,7 @@ namespace api.Controllers
     [Route("api/[controller]")]
     public class StocksController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
+        private static readonly string[] Some_Stocks = new[]
         {
             "AAPL", "MSFT", "AMZN", "GOOGL", "GOOG", "TSLA", "BRK.B", "JNJ", "UNH", "FD", "NVDA", "XOM", "PG", "JPM", "V", "CVX", "HD", "PFE", "MA", "ABBV", "KO", "BAC", "AVGO", "PEP", "LLY"
         };
@@ -25,7 +23,7 @@ namespace api.Controllers
         [HttpGet(Name = "Stocks")]
         public IEnumerable<string> Get()
         {
-            return Summaries;
+            return Some_Stocks;
         }
 
         [HttpGet("{symbol}")]
@@ -34,7 +32,7 @@ namespace api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Stock>> Get(string symbol)
         {
-            if (Array.IndexOf(Summaries, symbol) < 0) return NotFound();
+            if (Array.IndexOf(Some_Stocks, symbol) < 0) return NotFound();
 
             using StocksContext context = new();
 
@@ -42,7 +40,7 @@ namespace api.Controllers
 
             if(stock == null)
             {
-                stock = await RetrieveStock(symbol);
+                stock = await FetchStock(symbol);
 
                 if (stock == null) return new StatusCodeResult(StatusCodes.Status500InternalServerError);
 
@@ -51,11 +49,18 @@ namespace api.Controllers
             return Ok(stock);
         }
 
-        protected async Task<Stock?> RetrieveStock(string symbol)
+        protected async Task<Stock?> FetchStock(string symbol)
         {
+            // This is a temporary solution. Ideally, this information should ideally come from the database,
+            // but before we start storing it there, we should make sure that we can properly encrypt the keys.
+            string? apiKey = Environment.GetEnvironmentVariable("DATASOURCE_KEY");
+            string? apiUrl = Environment.GetEnvironmentVariable("DATASOURCE_URL");
+
+            if (apiKey == null || apiUrl == null) return null;
+
             using StocksContext context = new();
             using HttpClient httpClient = new();
-            using HttpRequestMessage request = new (new HttpMethod("GET"), $"https://financialmodelingprep.com/api/v3/historical-price-full/{symbol}?apikey=***REMOVED***");
+            using HttpRequestMessage request = new (new HttpMethod("GET"), $"{apiUrl}/{symbol}?apikey={apiKey}");
 
             request.Headers.TryAddWithoutValidation("Upgrade-Insecure-Requests", "1");
             HttpResponseMessage response = await httpClient.SendAsync(request);
@@ -64,18 +69,18 @@ namespace api.Controllers
 
             string responseBody = await response.Content.ReadAsStringAsync();
 
-            JsonNode? json = JsonNode.Parse(responseBody);
+            JsonNode? node = JsonNode.Parse(responseBody);
 
-            if (json is null) return null;
+            if (node is null) return null;
 
-            var stock1 = json["historical"][0];
+            JsonNode? stock1 = node["historical"][0];
 
-            DateTime added = new DateTime(DateTime.Parse((string)stock1["date"]).Ticks, DateTimeKind.Utc);
+            DateTime added = new(DateTime.Parse((string)stock1["date"]).Ticks, DateTimeKind.Utc);
 
             return new Stock
             {
                 Added = added,
-                Symbol = (string)json["symbol"],
+                Symbol = (string)node["symbol"],
                 Currency = "USD",
                 Open = JsonDollarsToCents(stock1["open"]),
                 High = JsonDollarsToCents(stock1["high"]),

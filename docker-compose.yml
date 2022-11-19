@@ -147,6 +147,8 @@ services:
      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
      - DATABASE_USERNAME=${DATABASE_USERNAME}
      - DATABASE_NAME=${DATABASE_NAME}
+     - DATASOURCE_KEY=${DATASOURCE_KEY}
+     - DATASOURCE_URL=${DATASOURCE_URL}
 
     # The api needs access to the database.
     depends_on:
