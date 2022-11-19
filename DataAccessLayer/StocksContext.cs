@@ -6,6 +6,7 @@ namespace DataAccessLayer.Models
         // https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/managing?tabs=dotnet-core-cli
         #region DbSets
         public DbSet<Stock> Stocks { get; set; }
+        public DbSet<StockPrice> StockPrices { get; set; }
         public DbSet<DataSource> DataSources { get; set; }
         #endregion
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -18,7 +19,7 @@ namespace DataAccessLayer.Models
 
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseNpgsql($"Host={host};Port={port};Database={database};User ID={userID};Password={password}");
+                optionsBuilder.UseNpgsql($"Host={host};Port={port};Database={database};User ID={userID};Password={password};Include Error Detail=True");
             }
         }
     }

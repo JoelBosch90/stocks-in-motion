@@ -3,6 +3,7 @@ using System;
 using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(StocksContext))]
-    partial class StocksContextModelSnapshot : ModelSnapshot
+    [Migration("20221119214634_SeparateStockPriceEntity2")]
+    partial class SeparateStockPriceEntity2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +62,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("character varying(255)");
 
                     b.Property<string>("Symbol")
-                        .IsRequired()
                         .HasMaxLength(5)
                         .HasColumnType("character varying(5)");
 
@@ -86,9 +87,6 @@ namespace DataAccessLayer.Migrations
                     b.Property<string>("Currency")
                         .HasColumnType("text");
 
-                    b.Property<long>("DataSourceId")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("High")
                         .HasColumnType("integer");
 
@@ -98,7 +96,10 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("Open")
                         .HasColumnType("integer");
 
-                    b.Property<long>("StockId")
+                    b.Property<long?>("SourceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("StockId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("Volume")
@@ -106,7 +107,26 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SourceId");
+
+                    b.HasIndex("StockId");
+
                     b.ToTable("StockPrices");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.StockPrice", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.DataSource", "Source")
+                        .WithMany()
+                        .HasForeignKey("SourceId");
+
+                    b.HasOne("DataAccessLayer.Models.Stock", "Stock")
+                        .WithMany()
+                        .HasForeignKey("StockId");
+
+                    b.Navigation("Source");
+
+                    b.Navigation("Stock");
                 });
 #pragma warning restore 612, 618
         }
