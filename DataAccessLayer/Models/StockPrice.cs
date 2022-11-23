@@ -9,13 +9,15 @@ namespace DataAccessLayer.Models
 
         public DateTime Added { get; set; }
 
-        public string? Currency { get; set; }
+        public DateTime Moment { get; set; }
 
-        public int Open { get; set; }
+        public string Currency { get; set; }
 
-        public int High { get; set; }
+        public int? Open { get; set; }
 
-        public int Low { get; set; }
+        public int? High { get; set; }
+
+        public int? Low { get; set; }
 
         public int Close { get; set; }
 

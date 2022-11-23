@@ -6,6 +6,8 @@ namespace DataAccessLayer.Models
     {
         public long Id { get; set; }
 
+        public DateTime Added { get; set; }
+
         [StringLength(255)]
         public string? Name { get; set; }
 
