@@ -28,8 +28,8 @@ namespace api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<StockPrice>>> Get(string symbol, string? first, string? last)
         {
-            DateTime utcFirst = first == null ? DateTime.UtcNow : Convert.ToDateTime(first).ToUniversalTime();
-            DateTime utcLast = last == null ? utcFirst.AddMonths(-1) : Convert.ToDateTime(last).ToUniversalTime();
+            DateTime utcLast = last == null ? DateTime.UtcNow : Convert.ToDateTime(last).ToUniversalTime();
+            DateTime utcFirst = first == null ? utcLast.AddMonths(-1) : Convert.ToDateTime(first).ToUniversalTime();
 
             Stock? stock = StockFetcher.Fetch(symbol);
             if (stock == null) return NotFound();

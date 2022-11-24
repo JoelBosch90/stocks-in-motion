@@ -11,10 +11,10 @@ namespace DataAccessLayer.Tools
 
             // @TODO: Currently, we fetch data if we're not up to date. Sadly, this means that we fetch data on every
             // request on weekends and bank holidays. We should come up with a solution for this.
-            DateTime? lastStockPriceDate = stockPrices.Count > 1 ? stockPrices.Max(stockPrice => stockPrice.Moment).Date : null;
-            if (lastStockPriceDate == DateTime.Today) return stockPrices;
+            DateTime? lastStockPrice = stockPrices.Count > 1 ? stockPrices.Max(stockPrice => stockPrice.Moment).Date : null;
+            if (lastStockPrice != null || (DateTime.UtcNow - (DateTime)lastStockPrice).TotalHours < 24) return stockPrices;
 
-            string? data = await RequestStockPriceData(stock, lastStockPriceDate?.AddDays(1));
+            string? data = await RequestStockPriceData(stock, lastStockPrice?.Date.AddDays(1));
             if (data != null) StoreStockPrices(FinancialModelingPrep.HistoricalPriceFullToStockPriceList(data, stock));
 
             stockPrices = FetchFromDatabase(stock, first, last);
