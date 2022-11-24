@@ -7,7 +7,7 @@ namespace DataAccessLayer.Tools
     {
         public static readonly string[] limitedList = new[]
         {
-            "AAPL", "MSFT", "AMZN", "GOOGL", "GOOG", "TSLA", "BRK.B", "JNJ", "UNH", "FD", "NVDA", "XOM", "PG", "JPM", "V", "CVX", "HD", "PFE", "MA", "ABBV", "KO", "BAC", "AVGO", "PEP", "LLY"
+            "AAPL", "MSFT", "AMZN", "GOOGL", "GOOG", "TSLA", "BRK.B", "JNJ", "UNH", "NVDA", "XOM", "PG", "JPM", "V", "CVX", "HD", "PFE", "MA", "ABBV", "KO", "BAC", "AVGO", "PEP", "LLY"
         };
 
         public static Stock? Fetch(string symbol)
@@ -21,7 +21,7 @@ namespace DataAccessLayer.Tools
         {
             using StocksContext context = new();
             Stock? stock = context.Stocks.SingleOrDefault(stock => stock.Symbol == symbol);
-            DateTime added = new(DateTime.Now.Ticks, DateTimeKind.Utc);
+            DateTime added = DateTime.UtcNow;
             stock ??= StoreStock(new Stock { Symbol = symbol, Added = added });
 
             return stock;

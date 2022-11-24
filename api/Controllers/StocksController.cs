@@ -1,6 +1,7 @@
 using DataAccessLayer.Models;
 using DataAccessLayer.Tools;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace api.Controllers
 {
@@ -25,12 +26,15 @@ namespace api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<StockPrice>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<StockPrice>>> Get(string symbol)
+        public async Task<ActionResult<IEnumerable<StockPrice>>> Get(string symbol, string? first, string? last)
         {
+            DateTime utcFirst = first == null ? DateTime.UtcNow : Convert.ToDateTime(first).ToUniversalTime();
+            DateTime utcLast = last == null ? utcFirst.AddMonths(-1) : Convert.ToDateTime(last).ToUniversalTime();
+
             Stock? stock = StockFetcher.Fetch(symbol);
             if (stock == null) return NotFound();
 
-            List<StockPrice> stockPrices = await StockPriceFetcher.Fetch(stock);
+            List<StockPrice> stockPrices = await StockPriceFetcher.Fetch(stock, utcFirst.Date, utcLast.Date);
             if (stockPrices.Count == 0) return new StatusCodeResult(StatusCodes.Status500InternalServerError);
 
             return Ok(stockPrices);

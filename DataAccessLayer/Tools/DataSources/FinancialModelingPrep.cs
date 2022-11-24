@@ -39,28 +39,21 @@ namespace DataAccessLayer.Tools.DataSources
 
         public static StockPrice HistoricalPriceToStockPrice(HistoricalPrice historicalPrice, Stock stock)
         {
-            // Right now, we're only storing information per day. We may eventually want more moments.
-            DateTime moment = new(DateTime.Parse(historicalPrice.date).Ticks, DateTimeKind.Utc);
-
-            // We also want to start storing currencies in the database at some point.
-            string currency = "USD";
-            DateTime added = new(DateTime.Now.Ticks, DateTimeKind.Utc);
-            Int32 open = DollarsToCents(historicalPrice.open);
-            Int32 high = DollarsToCents(historicalPrice.high);
-            Int32 low = DollarsToCents(historicalPrice.low);
-            Int32 close = DollarsToCents(historicalPrice.close);
-            Int64 volume = (Int64)JsonSerializer.Deserialize<decimal>(historicalPrice.unadjustedVolume);
-
             return new StockPrice{
-                Added = added,
-                Moment = moment,
-                Currency = currency,
-                Open = open,
-                High = high,
-                Low = low,
-                Close = close,
-                Volume = volume,
+                Added = DateTime.UtcNow,
+
+                // Right now, we're only storing information per day. We may eventually want more moments.
+                Moment = new(DateTime.Parse(historicalPrice.date).Ticks, DateTimeKind.Utc),
+
+                // We also want to start storing currencies in the database at some point.
+                Currency = "USD",
+                Open = DollarsToCents(historicalPrice.open),
+                High = DollarsToCents(historicalPrice.high),
+                Low = DollarsToCents(historicalPrice.low),
+                Close = DollarsToCents(historicalPrice.close),
+                Volume = (Int64)JsonSerializer.Deserialize<decimal>(historicalPrice.unadjustedVolume),
                 StockId = stock.Id,
+
                 // @TODO: get this from database when we have more than 1 source.
                 DataSourceId = 11, 
             };
