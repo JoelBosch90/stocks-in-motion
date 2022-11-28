@@ -40,8 +40,8 @@ namespace DataAccessLayer.Tools
 
             if (lastRequest == null) return false;
 
-            // For now, we want to simply check if we've checked before in the past 24 hours. If so, we call that recent.
-            return (DateTime.UtcNow - lastRequest.Added).Hours < 24;
+            // For now, we want to simply check only once a day.
+            return lastRequest.Added.Date == DateTime.UtcNow.Date;
         }
 
         protected static StockPrice? FetchLastFromDatabase(Stock stock)
