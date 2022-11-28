@@ -28,16 +28,16 @@ namespace DataAccessLayer.Tools.DataSources
             public decimal changeOverTime { get; set; }
         }
 
-        public static List<StockPrice> HistoricalPriceFullToStockPriceList(string data, Stock stock)
+        public static List<StockPrice> HistoricalPriceFullToStockPriceList(string data, Stock stock, long requestId)
         {
             HistoricalPriceFull? historicalPriceFull = JsonSerializer.Deserialize<HistoricalPriceFull>(data);
 
             if (historicalPriceFull?.historical == null) return new List<StockPrice>();
 
-            return historicalPriceFull.historical.ConvertAll(historicalPrice => HistoricalPriceToStockPrice(historicalPrice, stock));
+            return historicalPriceFull.historical.ConvertAll(historicalPrice => HistoricalPriceToStockPrice(historicalPrice, stock, requestId));
         }
 
-        public static StockPrice HistoricalPriceToStockPrice(HistoricalPrice historicalPrice, Stock stock)
+        public static StockPrice HistoricalPriceToStockPrice(HistoricalPrice historicalPrice, Stock stock, long requestId)
         {
             return new StockPrice{
                 Added = DateTime.UtcNow,
@@ -53,9 +53,7 @@ namespace DataAccessLayer.Tools.DataSources
                 Close = DollarsToCents(historicalPrice.close),
                 Volume = (Int64)JsonSerializer.Deserialize<decimal>(historicalPrice.unadjustedVolume),
                 StockId = stock.Id,
-
-                // @TODO: get this from database when we have more than 1 source.
-                DataSourceId = 11, 
+                DataRequestId = requestId
             };
         }
 

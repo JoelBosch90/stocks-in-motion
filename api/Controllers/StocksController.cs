@@ -34,7 +34,8 @@ namespace api.Controllers
             Stock? stock = StockFetcher.Fetch(symbol);
             if (stock == null) return NotFound();
 
-            List<StockPrice> stockPrices = await StockPriceFetcher.Fetch(stock, utcFirst.Date, utcLast.Date);
+            StockPriceFetcher fetcher = new();
+            List<StockPrice> stockPrices = await fetcher.Fetch(stock, utcFirst.Date, utcLast.Date);
             if (stockPrices.Count == 0) return new StatusCodeResult(StatusCodes.Status500InternalServerError);
 
             return Ok(stockPrices);

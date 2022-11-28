@@ -5,50 +5,104 @@ namespace DataAccessLayer.Tools
 {
     public class StockPriceFetcher
     {
-        public static async Task<List<StockPrice>> Fetch(Stock stock, DateTime first, DateTime last)
-        {
-            List<StockPrice> stockPrices = FetchFromDatabase(stock, first, last);
+        private readonly DataSource source;
 
-            // @TODO: Currently, we fetch data if we're not up to date. Sadly, this means that we fetch data on every
-            // request on weekends and bank holidays. We should come up with a solution for this.
-            DateTime? lastStockPrice = stockPrices.Count > 1 ? stockPrices.Max(stockPrice => stockPrice.Moment).Date : null;
-            if (lastStockPrice != null || (DateTime.UtcNow - (DateTime)lastStockPrice).TotalHours < 24) return stockPrices;
-
-            string? data = await RequestStockPriceData(stock, lastStockPrice?.Date.AddDays(1));
-            if (data != null) StoreStockPrices(FinancialModelingPrep.HistoricalPriceFullToStockPriceList(data, stock));
-
-            stockPrices = FetchFromDatabase(stock, first, last);
-            if (stockPrices.Count > 1) stockPrices = stockPrices.OrderBy(stockPrice => stockPrice.Moment).ToList();
-
-            return stockPrices;
-        }
-
-        protected static List<StockPrice> FetchFromDatabase(Stock stock, DateTime first, DateTime last)
+        public StockPriceFetcher()
         {
             using StocksContext context = new();
 
-            return context.StockPrices.Where(stockPrice => stockPrice.StockId == stock.Id && stockPrice.Moment >= first && stockPrice.Moment <= last).ToList();
+            // @TODO: Temporarily hardcoded until we have more than 1 data source.
+            long dataSourceId = 11;
+            DataSource? dataSource = context.DataSources.SingleOrDefault(source => source.Id == dataSourceId);
+            source = dataSource ?? new DataSource();
         }
 
-        protected static async Task<string?> RequestStockPriceData(Stock stock, DateTime? first)
+        public async Task<List<StockPrice>> Fetch(Stock stock, DateTime first, DateTime last)
         {
-            using HttpClient httpClient = new();
+            StockPrice? newestStockPrice = FetchLastFromDatabase(stock);
 
+            if (newestStockPrice == null || newestStockPrice.Moment.Date < last.Date)
+            {
+                if (!RecentlyFetched(stock)) await RequestStockPriceData(stock, newestStockPrice?.Moment.AddDays(1));
+            }
+
+            return FetchFromDatabase(stock, first, last);
+        }
+
+        protected bool RecentlyFetched(Stock stock)
+        {
+            using StocksContext context = new();
+
+            DataRequest? lastRequest = context.DataRequests
+                .Where(request => request.DataSourceId == source.Id && request.StockId == stock.Id)
+                .OrderByDescending(request => request.Added)
+                .FirstOrDefault();
+
+            if (lastRequest == null) return false;
+
+            // For now, we want to simply check if we've checked before in the past 24 hours. If so, we call that recent.
+            return (DateTime.UtcNow - lastRequest.Added).Hours < 24;
+        }
+
+        protected static StockPrice? FetchLastFromDatabase(Stock stock)
+        {
+            using StocksContext context = new();
+
+            List<StockPrice> stockPrices = context.StockPrices.Where(stockPrice => stockPrice.StockId == stock.Id)
+                .OrderByDescending(stockPrice => stockPrice.Moment).ToList();
+
+            return stockPrices.Count > 0 ? stockPrices.First() : null;
+        }
+
+        protected static List<StockPrice> FetchFromDatabase(Stock stock, DateTime? first, DateTime? last)
+        {
+            using StocksContext context = new();
+
+            return context.StockPrices.Where(stockPrice =>
+                stockPrice.StockId == stock.Id &&
+                (first == null || stockPrice.Moment >= first) &&
+                (last == null || stockPrice.Moment <= last)
+            ).OrderByDescending(stockPrice => stockPrice.Moment).ToList();
+        }
+
+        protected async Task RequestStockPriceData(Stock stock, DateTime? first)
+        {
             // This is a temporary solution. Ideally, this information should ideally come from the database,
             // but before we start storing it there, we should make sure that we can properly encrypt the keys.
             string? apiKey = Environment.GetEnvironmentVariable("DATASOURCE_KEY");
             string? apiUrl = Environment.GetEnvironmentVariable("DATASOURCE_URL");
-            if (apiKey == null || apiUrl == null) return null;
+            if (apiKey == null || apiUrl == null) return;
 
             string requestString = $"{apiUrl}/{stock.Symbol}?apikey={apiKey}";
             if (first != null) requestString += $"&from={first:yyyy-MM-dd}";
-            using HttpRequestMessage request = new(new HttpMethod("GET"), requestString);
 
+            using HttpClient httpClient = new();
+            using HttpRequestMessage request = new(new HttpMethod("GET"), requestString);
             request.Headers.TryAddWithoutValidation("Upgrade-Insecure-Requests", "1");
             HttpResponseMessage response = await httpClient.SendAsync(request);
-            if (!response.IsSuccessStatusCode) return null;
 
-            return await response.Content.ReadAsStringAsync();
+            string safeRequestString = requestString.Replace(apiKey, "DATASOURCE_KEY");
+            DataRequest dataRequest = StoreDataRequest(stock, safeRequestString, (int) response.StatusCode);
+            if (!response.IsSuccessStatusCode) return;
+
+            string dataString = await response.Content.ReadAsStringAsync();
+            StoreStockPrices(FinancialModelingPrep.HistoricalPriceFullToStockPriceList(dataString, stock, dataRequest.DataSourceId));
+        }
+
+        protected DataRequest StoreDataRequest(Stock stock, string requestString, int responseCode)
+        {
+            using StocksContext context = new();
+            DataRequest dataRequest = new DataRequest {
+                Added = DateTime.UtcNow,
+                RequestString = requestString,
+                ResponseCode = responseCode,
+                DataSourceId = source.Id,
+                StockId = stock.Id,
+            };
+            context.DataRequests.Add(dataRequest);
+            context.SaveChanges();
+
+            return dataRequest;
         }
 
         protected static void StoreStockPrices(List<StockPrice> stockPrices)

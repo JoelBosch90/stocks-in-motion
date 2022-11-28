@@ -22,8 +22,8 @@ namespace DataAccessLayer.Models
 
         public long Volume { get; set; }
 
-        [ForeignKey("DataSource")]
-        public long DataSourceId { get; set; }
+        [ForeignKey("DataRequest")]
+        public long DataRequestId { get; set; }
 
         [ForeignKey("Stock")]
         public long StockId { get; set; }
