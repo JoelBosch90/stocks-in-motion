@@ -6,6 +6,7 @@ import React, { FunctionComponent } from 'react';
 import styles from './StockChart.module.scss'
 import { useEffect, useState } from 'react';
 import { StockPrice, RawStockPrice } from "../../types/StockPrice"
+import LineChart from "../LineChart/LineChart"
 
 interface StockChartProps {
   ticker: string;
@@ -14,11 +15,17 @@ interface StockChartProps {
 const StockChart : FunctionComponent<StockChartProps> = ({ ticker }) => {
   const [stockPrices, setStockPrices] = useState<StockPrice[]>([])
 
-  const formatStockPriceDates = (stockPrices: RawStockPrice[]) => {
+  const formatStockPrices = (stockPrices: RawStockPrice[]) => {
     return Array.isArray(stockPrices) ? stockPrices.map((stockPrice: RawStockPrice) => ({
       ...stockPrice,
       added: new Date(stockPrice.added),
       moment: new Date(stockPrice.moment),
+
+      // Convert cents to dollars.
+      open: stockPrice.open / 100,
+      close: stockPrice.open / 100,
+      high: stockPrice.open / 100,
+      low: stockPrice.open / 100,
     })) : [];
   }
 
@@ -26,13 +33,13 @@ const StockChart : FunctionComponent<StockChartProps> = ({ ticker }) => {
   useEffect(() => {
     fetch(`/api/stocks/${ticker}`)
       .then((response: Response) => response.json())
-      .then(formatStockPriceDates)
+      .then(formatStockPrices)
       .then(setStockPrices)
   }, [ticker, setStockPrices])
 
   return (
     <div className={`${styles["stock-chart"]}`}>
-      {stockPrices.map(stockPrice => (<p key={stockPrice.id}>${stockPrice?.close}</p>))}
+      <LineChart data={stockPrices.map((stockPrice: StockPrice) => ({ y: stockPrice.close, x: stockPrice.moment }))} />
     </div>
   )
 }

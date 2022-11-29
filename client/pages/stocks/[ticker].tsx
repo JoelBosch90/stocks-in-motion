@@ -24,7 +24,6 @@ const Stock : NextPage = () => {
       <Layout>
         <h1>{ ticker }</h1>
         <p>Some initial information ...</p>
-        {ticker && <Card name={ticker} />}
         {ticker && <StockChart ticker={ticker} />}
       </Layout>
     </>
