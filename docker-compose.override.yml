@@ -1,5 +1,5 @@
 # Use the latest version of Docker Compose.
-version: "3.5"
+version: "3.8"
 
 # We want to spawn several separate services from Docker images and manage all
 # of them from this file.
@@ -75,7 +75,7 @@ services:
     restart: always
 
     # Get the PostgreSQL admin image from Docker Hub.
-    image: dpage/pgadmin4:latest
+    image: dpage/pgadmin4:6.16
 
     # Pass on the environment variables to the ui service.
     environment:

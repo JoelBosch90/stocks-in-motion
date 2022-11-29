@@ -1,5 +1,5 @@
 # Use the latest version of Docker Compose.
-version: "3.5"
+version: "3.8"
 
 # Not all of our services need to be able to talk to each other. It is best to
 # keep them separated where we can.
@@ -29,7 +29,7 @@ services:
     container_name: stocks-in-motion.proxy.production
 
     # We can use the latest version of Nginx.
-    image: nginx:latest
+    image: nginx:1.23.2-alpine
 
     # We always want to restart when things go wrong.
     restart: always
@@ -68,7 +68,7 @@ services:
     restart: always
 
     # Get the Postgres image from Docker Hub.
-    image: postgres:14.2-alpine
+    image: postgres:14.6-alpine3.16
 
     # Pass on the environment variables to the database service.
     environment:

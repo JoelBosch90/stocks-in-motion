@@ -1,5 +1,5 @@
 # Get a light NodeJS base image.
-FROM node:17-alpine
+FROM node:19.1-alpine3.16
 
 # Create the working directory.
 WORKDIR /client
