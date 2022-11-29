@@ -12,14 +12,13 @@ import Card from '../components/Card/Card'
 import { useEffect, useState } from 'react';
 
 const Stocks : NextPage = () => {
-
   const router = useRouter()
   const [tickers, setTickers] = useState([])
 
   // Get the tickers from the API.
   useEffect(() => {
     fetch('/api/stocks')
-      .then(response => response.json())
+      .then((response: Response) => response.json())
       .then(setTickers)
   }, [setTickers])
 

@@ -14,7 +14,7 @@ import StockChart from '../../components/StockChart/StockChart'
 const Stock : NextPage = () => {
   
   const router = useRouter()
-  const ticker = String(router?.query?.ticker)
+  const ticker = router?.query?.ticker && String(router?.query?.ticker);
 
   return (
     <>
@@ -24,8 +24,8 @@ const Stock : NextPage = () => {
       <Layout>
         <h1>{ ticker }</h1>
         <p>Some initial information ...</p>
-        <Card name={ticker} />
-        <StockChart ticker={ticker} />
+        {ticker && <Card name={ticker} />}
+        {ticker && <StockChart ticker={ticker} />}
       </Layout>
     </>
   )

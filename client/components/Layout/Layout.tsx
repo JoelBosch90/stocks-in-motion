@@ -14,7 +14,7 @@ import Footer from './Footer/Footer'
 import styles from './Layout.module.scss'
 
 interface LayoutProps {
-  children: JSX.Element | JSX.Element[]
+  children: React.ReactNode
 }
 
 const Layout : FunctionComponent<LayoutProps> = ({ children }) => {
