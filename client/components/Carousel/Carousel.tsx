@@ -1,36 +1,36 @@
 /**
- *  Component that creates a slider that can house multiple components in a
+ *  Component that creates a carousel that can house multiple components in a
  *  scrollable row- or column-like fashion inspired by the Netflix grid.
  */
 
 import React, { FunctionComponent, useState, useRef } from 'react';
-import styles from './slider.module.scss'
+import styles from './Carousel.module.scss'
 
-interface SliderProps {
+interface CarouselProps {
   children: JSX.Element | JSX.Element[],
   column?: boolean,
 }
 
-const Slider : FunctionComponent<SliderProps> = ({ children, column=false }) => {
+const Carousel : FunctionComponent<CarouselProps> = ({ children, column=false }) => {
 
-  const sliderRef = useRef(null);
+  const carouselRef = useRef(null);
   const scrollContainerRef = useRef(null);
   const [scrollAmount, setScrollAmount] = useState<number>(0);
 
-  const wrapSlide = (content: JSX.Element) : JSX.Element => (
-    <div className={styles.slide}>
+  const wrapCard = (content: JSX.Element) : JSX.Element => (
+    <div className={styles.carousel}>
       { content }
     </div>
   )
 
-  const sliderWidth = () : number => sliderRef?.current ? sliderRef?.current['clientWidth'] : 0
+  const carouselWidth = () : number => carouselRef?.current ? carouselRef?.current['clientWidth'] : 0
   const scrollContainerWidth = () : number => scrollContainerRef?.current ? scrollContainerRef?.current['clientWidth'] : 0
-  const maxScrollAmount = () : number => scrollContainerWidth() - sliderWidth()
+  const maxScrollAmount = () : number => scrollContainerWidth() - carouselWidth()
 
-  // It is better if users still see a slide that was shown before scrolling so
+  // It is better if users still see a card that was shown before scrolling so
   // that they know that nothing was skipped. Hence we only step by 80% of the
-  // full slider width.
-  const scrollStep = () : number => Math.round(0.8 * sliderWidth());
+  // full carousel width.
+  const scrollStep = () : number => Math.round(0.8 * carouselWidth());
 
   const scroll = (direction: string) : void => {
     switch(direction) {
@@ -42,16 +42,16 @@ const Slider : FunctionComponent<SliderProps> = ({ children, column=false }) => 
 
   return (
     <div
-      ref={sliderRef}
-      className={`${styles.slider} ${column ? styles.column : ''}`}
+      ref={carouselRef}
+      className={`${styles.carousel} ${column ? styles.column : ''}`}
     >
 
       <div
         ref={scrollContainerRef}
-        className={styles.scrollContainer}
+        className={styles["scroll-container"]}
         style={{ '--scrollAmount': `${scrollAmount}px` } as React.CSSProperties}
       >
-        { React.Children.map(children, wrapSlide) }
+        { React.Children.map(children, wrapCard) }
       </div>
 
       <button
@@ -72,4 +72,4 @@ const Slider : FunctionComponent<SliderProps> = ({ children, column=false }) => 
   )
 }
 
-export default Slider
+export default Carousel

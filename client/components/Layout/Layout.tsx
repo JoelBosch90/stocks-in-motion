@@ -9,9 +9,9 @@
  */
 
 import React, { FunctionComponent } from 'react';
-import Header from './layout/header'
-import Footer from './layout/footer'
-import styles from './layout.module.scss'
+import Header from './Header/Header'
+import Footer from './Footer/Footer'
+import styles from './Layout.module.scss'
 
 interface LayoutProps {
   children: JSX.Element | JSX.Element[]

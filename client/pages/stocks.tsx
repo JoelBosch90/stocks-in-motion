@@ -6,9 +6,9 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router';
 import Head from 'next/head'
-import Layout from '../components/layout'
-import Slider from '../components/slider'
-import Card from '../components/card'
+import Layout from '../components/Layout/Layout'
+import Carousel from '../components/Carousel/Carousel'
+import Card from '../components/Card/Card'
 import { useEffect, useState } from 'react';
 
 const Stocks : NextPage = () => {
@@ -43,12 +43,12 @@ const Stocks : NextPage = () => {
         
         <section>
           <h3>Favorites</h3>
-          <Slider>{ cards }</Slider>
+          <Carousel>{ cards }</Carousel>
         </section>        
 
         <section>
           <h3>S&P 500</h3>
-          <Slider>{ cards }</Slider>
+          <Carousel>{ cards }</Carousel>
         </section>
       </Layout>
     </>

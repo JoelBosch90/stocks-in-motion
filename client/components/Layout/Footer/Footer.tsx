@@ -3,7 +3,7 @@
  */
 
 import React, { FunctionComponent } from 'react';
-import styles from './footer.module.scss'
+import styles from './Footer.module.scss'
 
 interface FooterProps {
   className: string,

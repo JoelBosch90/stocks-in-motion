@@ -1,8 +1,8 @@
 /**
- *  This file contains all styling that is specific to the slider component.
+ *  This file contains all styling that is specific to the carousel component.
  */
 
-.slider
+.carousel
 {
   // Make sure we can position our sidescroll buttons absolutely inside this 
   // container.
@@ -16,14 +16,14 @@
   height: 100%;
   width: 100%;
 
-  .scrollContainer
+  .scroll-container
   {
     // Use Flexbox to create a simple single column layout.
     display: inline-flex;
     flex-direction: row;
     flex-wrap: nowrap;
   
-    // Keep a little bit of space between slides.
+    // Keep a little bit of space between cards.
     gap: 0.25em;
     
     // We want to use a CSS variable to set the amount of scrolling we need to
@@ -40,7 +40,7 @@
 
   button
   {
-    // Position these sidescroll buttons on top of the slides.
+    // Position these sidescroll buttons on top of the cards.
     position: absolute;
 
     // Make sure that the buttons overlap the container.

@@ -3,17 +3,17 @@
  */
 
 import React, { FunctionComponent } from 'react';
-import styles from './card.module.scss'
+import styles from './StockChart.module.scss'
 
-interface CardProps {
+interface StockChartProps {
   name: string,
   onClick?: (event: React.MouseEvent<HTMLElement>) => void,
 }
 
-const Card : FunctionComponent<CardProps> = ({ name, onClick }) => {
+const StockChart : FunctionComponent<StockChartProps> = ({ name, onClick }) => {
   return (
     <div
-      className={`${styles.card} ${onClick ? styles.clickable : ''}`}
+      className={`${styles.stockChart} ${onClick ? styles.clickable : ''}`}
       onClick={onClick}
     >
       <h4>{ name }</h4>
@@ -21,4 +21,4 @@ const Card : FunctionComponent<CardProps> = ({ name, onClick }) => {
   )
 }
 
-export default Card
+export default StockChart

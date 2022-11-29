@@ -6,8 +6,9 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import Layout from '../../components/layout'
-import Card from '../../components/card'
+import Layout from '../../components/Layout/Layout'
+import Card from '../../components/Card/Card'
+import StockChart from '../../components/StockChart/StockChart'
 
 
 const Stock : NextPage = () => {
@@ -24,6 +25,7 @@ const Stock : NextPage = () => {
         <h1>{ ticker }</h1>
         <p>Some initial information ...</p>
         <Card name={ticker} />
+        <StockChart ticker={ticker} />
       </Layout>
     </>
   )

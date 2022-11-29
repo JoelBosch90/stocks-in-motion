@@ -4,7 +4,7 @@
 
 import React, { FunctionComponent } from 'react';
 import Link from 'next/link'
-import styles from './header.module.scss'
+import styles from './Header.module.scss'
 
 interface HeaderProps {
   className: string,
