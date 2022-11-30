@@ -2,6 +2,7 @@ using DataAccessLayer.Models;
 using DataAccessLayer.Tools;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Text.RegularExpressions;
 
 namespace api.Controllers
 {
@@ -28,10 +29,12 @@ namespace api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<StockPrice>>> Get(string symbol, string? first, string? last)
         {
+            string sanitizedSymbol = SanitizeInput(symbol);
+
             DateTime utcLast = last == null ? DateTime.UtcNow : Convert.ToDateTime(last).ToUniversalTime();
             DateTime utcFirst = first == null ? utcLast.AddMonths(-1) : Convert.ToDateTime(first).ToUniversalTime();
 
-            Stock? stock = StockFetcher.Fetch(symbol);
+            Stock? stock = StockFetcher.Fetch(sanitizedSymbol);
             if (stock == null) return NotFound();
 
             StockPriceFetcher fetcher = new();
@@ -39,6 +42,13 @@ namespace api.Controllers
             if (stockPrices.Count == 0) return new StatusCodeResult(StatusCodes.Status500InternalServerError);
 
             return Ok(stockPrices);
+        }
+
+        private static string SanitizeInput(string input)
+        {
+            Regex regex = new("[^a-zA-Z0-9._-]");
+
+            return regex.Replace(input, "");
         }
     }
 }
