@@ -57,4 +57,5 @@
   position: absolute;
   transform: translateX(-50%);
   transform-box: fill-box;
+  transition: opacity var(--animation-speed-quick);
 }

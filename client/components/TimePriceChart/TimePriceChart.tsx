@@ -142,14 +142,17 @@ const TimePriceChart : FunctionComponent<TimePriceChartProps> = ({ data, currenc
               price: point[1],
               visible: true,
             })}
-            // onMouseOut={debounce<void>(() => setTooltip(defaultTooltip))}
+            onMouseOut={debounce<void>(() => setTooltip(defaultTooltip))}
           />
         ))}
 
         <text
           ref={tooltipRef}
           className={styles.tooltip}
-          style={{ visibility: tooltip.visible ? "visible" : "hidden" }}
+          style={{
+            opacity: tooltip.visible ? 1 : 0,
+            visibility: tooltip.visible ? "visible" : "hidden"
+          }}
           x={tooltip.x}
           y={tooltip.y}
           fill="currentColor"
