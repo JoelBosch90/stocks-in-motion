@@ -2,46 +2,32 @@
  *  Component that creates a single stock chart.
  */
 
-import React, { FunctionComponent } from 'react';
-import styles from './StockChart.module.scss'
-import { useEffect, useState } from 'react';
-import { StockPrice, RawStockPrice } from "../../types/StockPrice"
-import LineChart from "../LineChart/LineChart"
+import React, { FunctionComponent, useState } from 'react'
+import { StockPrice } from "../../types/StockPrice"
+import currencyToSymbol from "../../helpers/currencyToSymbol"
+import useFetchStockPrices from '../../hooks/useFetchStockPrices'
+import TimePriceChart, { InputPoint, InputData } from "../TimePriceChart/TimePriceChart"
 
-interface StockChartProps {
-  ticker: string;
+export interface StockChartProps {
+  ticker: string
 }
 
 const StockChart : FunctionComponent<StockChartProps> = ({ ticker }) => {
   const [stockPrices, setStockPrices] = useState<StockPrice[]>([])
+  const currency = currencyToSymbol(stockPrices.length > 1 ? stockPrices[0].currency : "USD")
+  
+  const last = new Date()
+  const first = new Date(last)
+  first.setDate(1)
+  first.setMonth(last.getMonth() - 6)
+  useFetchStockPrices(ticker, setStockPrices, first, last)
 
-  const formatStockPrices = (stockPrices: RawStockPrice[]) => {
-    return Array.isArray(stockPrices) ? stockPrices.map((stockPrice: RawStockPrice) => ({
-      ...stockPrice,
-      added: new Date(stockPrice.added),
-      moment: new Date(stockPrice.moment),
+  const data: InputData = stockPrices.map((stockPrice: StockPrice) : InputPoint => ({
+    date: stockPrice.moment,
+    price: stockPrice.close,
+  }))
 
-      // Convert cents to dollars.
-      open: stockPrice.open / 100,
-      close: stockPrice.open / 100,
-      high: stockPrice.open / 100,
-      low: stockPrice.open / 100,
-    })) : [];
-  }
-
-  // Get the tickers from the API.
-  useEffect(() => {
-    fetch(`/api/stocks/${ticker}`)
-      .then((response: Response) => response.json())
-      .then(formatStockPrices)
-      .then(setStockPrices)
-  }, [ticker, setStockPrices])
-
-  return (
-    <div className={`${styles["stock-chart"]}`}>
-      <LineChart data={stockPrices.map((stockPrice: StockPrice) => ({ y: stockPrice.close, x: stockPrice.moment }))} />
-    </div>
-  )
+  return <TimePriceChart data={data} currency={currency} />
 }
 
 export default StockChart

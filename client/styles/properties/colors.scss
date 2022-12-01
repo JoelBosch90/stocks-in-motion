@@ -36,10 +36,10 @@
   --pink: hsl(var(--hue-pink), var(--saturation), var(--lightness));
 
   // This black has the slightly hint of red to give the app a warmer feeling.
-  --black: hsl(0, var(--saturation), 0.25%);
+  --black: hsl(0, var(--saturation), 0.05%);
 
   // Use a light hint of yellow in the white for good contrast with the black.
-  --white: hsl(50, var(--saturation), 99.75%);
+  --white: hsl(50, var(--saturation), 99.95%);
 
   // Set the branding colors.
   --background-color: var(--black);

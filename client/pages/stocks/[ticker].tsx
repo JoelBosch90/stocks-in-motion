@@ -7,12 +7,10 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Layout from '../../components/Layout/Layout'
-import Card from '../../components/Card/Card'
 import StockChart from '../../components/StockChart/StockChart'
 
 
 const Stock : NextPage = () => {
-  
   const router = useRouter()
   const ticker = router?.query?.ticker && String(router?.query?.ticker);
 
@@ -23,7 +21,6 @@ const Stock : NextPage = () => {
       </Head>
       <Layout>
         <h1>{ ticker }</h1>
-        <p>Some initial information ...</p>
         {ticker && <StockChart ticker={ticker} />}
       </Layout>
     </>
