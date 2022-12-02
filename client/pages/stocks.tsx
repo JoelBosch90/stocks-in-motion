@@ -5,31 +5,27 @@
 
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router';
+
 import Head from 'next/head'
 import Layout from '../components/Layout/Layout'
 import Carousel from '../components/Carousel/Carousel'
 import Card from '../components/Card/Card'
-import { useEffect, useState } from 'react';
+import { useGetStocksQuery } from '../store/services/stocks'
 
 const Stocks : NextPage = () => {
   const router = useRouter()
-  const [tickers, setTickers] = useState([])
 
   // Get the tickers from the API.
-  useEffect(() => {
-    fetch('/api/stocks')
-      .then((response: Response) => response.json())
-      .then(setTickers)
-  }, [setTickers])
+  const { data } = useGetStocksQuery()
 
   // Create a card for each ticker.
-  const cards = tickers.map((name:string) : JSX.Element =>
+  const cards = data?.map((name: string) : React.ReactNode =>
     <Card
       name={name}
       key={name}
       onClick={() => router.push(`/stocks/${name}`)}
     />
-  )
+  ) ?? []
 
   return (
     <>

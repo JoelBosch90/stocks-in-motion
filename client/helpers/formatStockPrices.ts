@@ -1,4 +1,4 @@
-import { StockPrice, RawStockPrice } from "../types/StockPrice"
+import { StockPrice, RawStockPrice } from '../types/StockPrice'
 
 const formatStockPrices = (stockPrices: RawStockPrice[]): StockPrice[] => {
   return Array.isArray(stockPrices) ? stockPrices.map((stockPrice: RawStockPrice) => ({

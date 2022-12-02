@@ -7,7 +7,7 @@ import React, { FunctionComponent, useState, useRef } from 'react';
 import styles from './Carousel.module.scss'
 
 interface CarouselProps {
-  children: JSX.Element | JSX.Element[],
+  children: React.ReactNode,
   column?: boolean,
 }
 
@@ -17,7 +17,7 @@ const Carousel : FunctionComponent<CarouselProps> = ({ children, column=false })
   const scrollContainerRef = useRef(null);
   const [scrollAmount, setScrollAmount] = useState<number>(0);
 
-  const wrapCard = (content: JSX.Element) : JSX.Element => (
+  const wrapCard = (content: React.ReactNode) : React.ReactNode => (
     <div className={styles.carousel}>
       { content }
     </div>

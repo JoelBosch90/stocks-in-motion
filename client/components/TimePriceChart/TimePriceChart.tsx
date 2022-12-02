@@ -5,8 +5,8 @@
 import React, { FunctionComponent, useRef, useState, MouseEvent } from 'react'
 import useMeasure from 'react-use-measure'
 import styles from './TimePriceChart.module.scss'
-import * as d3 from "d3"
-import debounce from "../../helpers/debounce"
+import * as d3 from 'd3'
+import debounce from '../../helpers/debounce'
 
 export interface TimePriceChartProps {
   data: InputData
@@ -97,13 +97,13 @@ const TimePriceChart : FunctionComponent<TimePriceChartProps> = ({ data, currenc
             <line
               x1={margins.left}
               x2={svgBounds.width - margins.right}
-              stroke="currentColor"
+              stroke='currentColor'
               strokeWidth={1}
-              strokeDasharray="2,5"
+              strokeDasharray='2,5'
             />
             <text
-              fill="currentColor"
-              dominantBaseline="middle"
+              fill='currentColor'
+              dominantBaseline='middle'
             >
               {`${currency}${price}`}
             </text>
@@ -117,24 +117,24 @@ const TimePriceChart : FunctionComponent<TimePriceChartProps> = ({ data, currenc
             transform={`translate(${xScale(date)}, ${svgBounds.height - margins.bottom})`}
           >
             <text
-              fill="currentColor"
-              dominantBaseline="middle"
-              textAnchor="middle"
+              fill='currentColor'
+              dominantBaseline='middle'
+              textAnchor='middle'
             >
-              {new Date(date).toLocaleString("default", { month: "long" })}
+              {new Date(date).toLocaleString('default', { month: 'long' })}
             </text>
           </g>
         ))}
 
-        <path d={d} fill="none" stroke="currentColor" />
+        <path d={d} fill='none' stroke='currentColor' />
 
         {chartData.map((point) => (
           <circle
-            r="2"
+            r='2'
             key={point[0]}
             cx={xScale(point[0])}
             cy={yScale(point[1])}
-            fill="currentColor"
+            fill='currentColor'
             onMouseEnter={() => setTooltip({
               x: xScale(point[0]),
               y: yScale(point[1] + margins.tooltip),
@@ -151,13 +151,13 @@ const TimePriceChart : FunctionComponent<TimePriceChartProps> = ({ data, currenc
           className={styles.tooltip}
           style={{
             opacity: tooltip.visible ? 1 : 0,
-            visibility: tooltip.visible ? "visible" : "hidden"
+            visibility: tooltip.visible ? 'visible' : 'hidden'
           }}
           x={tooltip.x}
           y={tooltip.y}
-          fill="currentColor"
+          fill='currentColor'
         >
-          {tooltip.price ?  `${currency}${tooltip.price}` : "Loading..."}
+          {tooltip.price ?  `${currency}${tooltip.price}` : 'Loading...'}
         </text>
       </svg>
     </div>

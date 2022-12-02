@@ -13,10 +13,10 @@ interface HeaderProps {
 const Header : FunctionComponent<HeaderProps> = ({ className }) => {
 
   const pages = {
-    "/": "Home",
-    "/stocks": "Stocks",
-    "/features": "Features",
-    "/about": "About",
+    '/': 'Home',
+    '/stocks': 'Stocks',
+    '/features': 'Features',
+    '/about': 'About',
   }
 
   const links = Object.entries(pages).map(([url, name]) => {
