@@ -14,6 +14,7 @@ RUN dotnet build "./api/api.csproj" -c Release -o /app/build
 
 # Make sure that we update the database to use the latest migrations.
 FROM mcr.microsoft.com/dotnet/core/sdk:6.0 AS setup
+WORKDIR /src/DataAccessLayer
 ENV PATH $PATH:/root/.dotnet/tools
 RUN dotnet tool install --global dotnet-ef --version 6.0.7
 RUN dotnet-ef migrations add CreateDatabase
