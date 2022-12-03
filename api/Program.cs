@@ -23,4 +23,17 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Run pending migrations.
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    IServiceProvider services = scope.ServiceProvider;
+
+    StocksContext context = services.GetRequiredService<StocksContext>();
+
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
+}
+
 app.Run();
