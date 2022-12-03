@@ -134,7 +134,7 @@ services:
     # We want to build from the production dockerfile in the API directory.
     build:
       context: .
-      dockerfile: ./apiBuild/production.dockerfile
+      dockerfile: ./api/production.dockerfile
 
     # We can expose the api service in the container network.
     expose:
