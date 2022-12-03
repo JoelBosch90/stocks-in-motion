@@ -60,6 +60,4 @@ jobs:
         KEY: ${{ secrets.KEY }}
         script: |
           cd /var/www/stocks-in-motion
-          sudo chmod +x shortcuts.sh
-          sudo ln -s /var/www/stocks-in-motion/shortcuts.sh /usr/bin/stocks
           stocks production --build
