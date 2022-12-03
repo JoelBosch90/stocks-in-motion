@@ -53,12 +53,6 @@ jobs:
     # directory for our repository and rebuild the Docker Compose network.
     - name: Execute remote command through SSH
       uses: appleboy/ssh-action@master
-      env:
-        DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-        DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-        DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-        DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
-        DATASOURCE_KEY: ${{ secrets.DATASOURCE_KEY }}
       with:
         HOST: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USER }}
