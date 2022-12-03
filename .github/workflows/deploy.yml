@@ -60,4 +60,6 @@ jobs:
         KEY: ${{ secrets.KEY }}
         script: |
           cd /var/www/stocks-in-motion
-          docker-compose -f docker-compose.yml up -d --build
+          sudo chmod +x shortcuts.sh
+          sudo ln -s /var/www/stocks-in-motion/shortcuts.sh /usr/bin/stocks
+          stocks production --build
