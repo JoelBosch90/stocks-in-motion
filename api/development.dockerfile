@@ -6,10 +6,11 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["api.csproj", "./"]
-RUN dotnet restore "api.csproj"
-COPY . .
-RUN dotnet build "api.csproj" -c Release -o /app/build
+COPY ["./api/api.csproj", "./api/"]
+RUN dotnet restore "./api/api.csproj"
+COPY . ./api/
+COPY ../DataAccessLayer/ ./DataAccessLayer/
+RUN dotnet build "./api/api.csproj" -c Release -o /app/build
 
 # Make sure that we update the database to use the latest migrations.
 FROM mcr.microsoft.com/dotnet/core/sdk:6.0 AS setup
@@ -20,9 +21,9 @@ RUN dotnet-ef migrations add LimitStrings
 RUN dotnet-ef database update
 
 FROM build AS publish
-RUN dotnet publish "api.csproj" -c Release -o /app/publish
+RUN dotnet publish "./api/api.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "api.dll"]
+ENTRYPOINT ["dotnet", "./AssembledApi.dll"]

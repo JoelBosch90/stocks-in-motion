@@ -7,6 +7,7 @@
     <UserSecretsId>7fce6271-d7aa-4e71-970c-de67e4625b43</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <AssemblyName>AssembledApi</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

@@ -75,7 +75,7 @@ services:
     restart: always
 
     # Get the PostgreSQL admin image from Docker Hub.
-    image: dpage/pgadmin4:6.16
+    image: dpage/pgadmin4:6.17
 
     # Pass on the environment variables to the ui service.
     environment:
@@ -113,15 +113,10 @@ services:
     # Make sure that the API is running in development mode.
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS=true
+      - NUGET_FALLBACK_PACKAGES=
 
     # We want to build from the development dockerfile in the API directory.
     build:
-      dockerfile: development.dockerfile
-
-    # We want to bind the changes inside the container to a local folder so that
-    # we can update the code in real time.
-    volumes:
-      - ./api:/api
-      - ./DataAccessLayer:/DataAccessLayer
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      dockerfile: ./api/development.dockerfile
