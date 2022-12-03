@@ -60,4 +60,4 @@ jobs:
         KEY: ${{ secrets.KEY }}
         script: |
           cd /var/www/stocks-in-motion
-          stocks production --build
+          stocks production -d --build
