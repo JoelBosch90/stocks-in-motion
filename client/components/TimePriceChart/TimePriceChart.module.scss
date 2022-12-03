@@ -1,0 +1,61 @@
+/**
+ *  This file contains all styling that is specific to the TimePriceChart
+ *  component.
+ */
+
+.chart
+{
+  position: relative;
+  background-color: hsl(var(--hue-pink), var(--saturation), calc(var(--lightness) / 20));
+
+  path,
+  circle
+  {
+    color: var(--pink);
+    cursor: pointer;
+  }
+
+  .legend
+  {
+    color: var(--white);
+
+    line
+    {
+      color: hsl(var(--hue-turquoise), var(--saturation), calc(var(--lightness) / 3));
+    }
+  }
+}
+
+@keyframes loadingPulse {
+  to {
+    background-color: hsl(var(--hue-pink), var(--saturation), calc(var(--lightness) / 5));
+  }
+}
+
+.loader
+{
+  animation-name: loadingPulse;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
+  animation-timing-function: ease-in-out;
+}
+
+.chart,
+.loader
+{
+  width: 100%;
+  aspect-ratio: 16/8;
+
+  border-radius: 1em;
+  padding: 1em;
+  box-sizing: border-box;
+}
+
+.tooltip
+{
+  position: absolute;
+  transform: translateX(-50%);
+  transform-box: fill-box;
+  transition: opacity var(--animation-speed-quick);
+}

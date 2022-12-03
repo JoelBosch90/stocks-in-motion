@@ -5,18 +5,27 @@
 
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router';
+
 import Head from 'next/head'
-import Layout from '../components/layout'
-import Slider from '../components/slider'
-import Card from '../components/card'
+import Layout from '../components/Layout/Layout'
+import Carousel from '../components/Carousel/Carousel'
+import Card from '../components/Card/Card'
+import { useGetStocksQuery } from '../store/services/stocks'
 
 const Stocks : NextPage = () => {
-
   const router = useRouter()
 
-  // Create some temporary example elements.
-  const cards = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'GOOG', 'TSLA', 'BRK.B', 'JNJ', 'UNH', 'FD', 'NVDA', 'XOM', 'PG', 'JPM', 'V', 'CVX', 'HD', 'PFE', 'MA', 'ABBV', 'KO', 'BAC', 'AVGO', 'PEP', 'LLY']
-    .map((name:string) : JSX.Element => <Card name={name} key={name} onClick={() => router.push(`/stocks/${name}`)} />)
+  // Get the tickers from the API.
+  const { data } = useGetStocksQuery()
+
+  // Create a card for each ticker.
+  const cards = data?.map((name: string) : React.ReactNode =>
+    <Card
+      name={name}
+      key={name}
+      onClick={() => router.push(`/stocks/${name}`)}
+    />
+  ) ?? []
 
   return (
     <>
@@ -29,12 +38,12 @@ const Stocks : NextPage = () => {
         
         <section>
           <h3>Favorites</h3>
-          <Slider>{ cards }</Slider>
+          <Carousel>{ cards }</Carousel>
         </section>        
 
         <section>
           <h3>S&P 500</h3>
-          <Slider>{ cards }</Slider>
+          <Carousel>{ cards }</Carousel>
         </section>
       </Layout>
     </>

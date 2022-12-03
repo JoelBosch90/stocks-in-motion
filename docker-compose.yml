@@ -1,0 +1,163 @@
+# Use the latest version of Docker Compose.
+version: "3.8"
+
+# Not all of our services need to be able to talk to each other. It is best to
+# keep them separated where we can.
+networks:
+
+  # Ultimately, we'll only expose the proxy service publicly. That means that
+  # all services that we need to be publicly accessible through the proxy need
+  # to be able to talk to the proxy.
+  proxied:
+
+  # Then there are those services that don't need to be publicly accessible and
+  # only communicate with other services. They go into the protected network.
+  protected:
+
+# We want to spawn several separate services from Docker images and manage all
+# of them from this file.
+services:
+
+  ##############################################################################
+  #
+  # Proxy
+  #   We use Nginx as a reverse proxy to direct requests to the ports of the
+  #   correct services. This way we can hide the application's inner network.
+  #
+  ##############################################################################
+  proxy:
+    container_name: stocks-in-motion.proxy.production
+
+    # We can use the latest version of Nginx.
+    image: nginx:1.23.2-alpine
+
+    # We always want to restart when things go wrong.
+    restart: always
+
+    # We want to expose at port 8005.
+    ports:
+      - 8005:80
+
+    # We can use volumes to copy our reverse proxy configuration into Nginx.
+    volumes:
+      # Use the production configuration to expose only what's necessary.
+      - ./proxy/production.conf:/etc/nginx/nginx.conf
+      - ./proxy/logs:/etc/nginx/error_log.log
+
+    # The proxy needs access to the publicly accessible services.
+    depends_on:
+      - client
+      - api
+
+    # We need access to all the services that should be exposed (partly)
+    # publicly.
+    networks:
+      - proxied
+
+  ##############################################################################
+  #
+  # PostgreSQL Database
+  #   This is the service that serves the main database that houses the raw data
+  #   of the historic stock prices.
+  #
+  ##############################################################################
+  stockpricedb:
+    container_name: stocks-in-motion.stockpricedb.production
+
+    # We always want to restart when things go wrong.
+    restart: always
+
+    # Get the Postgres image from Docker Hub.
+    image: postgres:14.6-alpine3.16
+
+    # Pass on the environment variables to the database service.
+    environment:
+     - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+     - POSTGRES_USER=${DATABASE_USERNAME}
+     - POSTGRES_DB=${DATABASE_NAME}
+     - PGDATA=/var/lib/postgresql/data/pgdata
+
+    # We need to designate a volume on physical disk to persist data between
+    # restarts.
+    volumes:
+      - ./stockpricedb:/var/lib/postgresql/data
+
+    # Use the default port for this service.
+    command: -p 80
+
+    # We can expose this database service in the container network.
+    expose:
+      - "80"
+
+    # The database does not have to communicate with our proxy.
+    networks:
+      - protected
+
+  ##############################################################################
+  #
+  # Client
+  #   This is the service that serves all client-side files.
+  #
+  ##############################################################################
+  client:
+    container_name: stocks-in-motion.client.production
+
+    # We always want to restart when things go wrong.
+    restart: always
+
+    # We want to build from the production dockerfile in the client directory.
+    build:
+      context: ./client/
+      dockerfile: production.dockerfile
+
+    # We can expose the client service in the container network.
+    expose:
+      - "80"
+
+    # We need the reverse proxy to expose the client publicly, so we need to
+    # give it access to the client service.
+    networks:
+      - proxied
+
+  ##############################################################################
+  #
+  # API
+  #   This is the service that serves all server-side requests.
+  #
+  ##############################################################################
+  api:
+    container_name: stocks-in-motion.api.production
+
+    # We always want to restart when things go wrong.
+    restart: always
+
+    # We want to build from the production dockerfile in the API directory.
+    build:
+      context: .
+      dockerfile: ./api/production.dockerfile
+
+    # We can expose the api service in the container network.
+    expose:
+      - "80"
+
+    # Pass on the environment variables to the API service.
+    environment:
+     - DATABASE_PORT=80
+     - DATABASE_HOST=stockpricedb
+     - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+     - DATABASE_USERNAME=${DATABASE_USERNAME}
+     - DATABASE_NAME=${DATABASE_NAME}
+     - DATASOURCE_KEY=${DATASOURCE_KEY}
+     - DATASOURCE_URL=${DATASOURCE_URL}
+
+    # The api needs access to the database.
+    depends_on:
+      - stockpricedb
+
+    # We need the reverse proxy to expose the API publicly, so we need to
+    # give it access to the API service. In addition, it needs to be able to
+    # communicate to the database, so it also requires access to the protected
+    # network.
+    networks:
+      - proxied
+      - protected

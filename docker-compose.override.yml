@@ -1,0 +1,122 @@
+# Use the latest version of Docker Compose.
+version: "3.8"
+
+# We want to spawn several separate services from Docker images and manage all
+# of them from this file.
+services:
+
+  ##############################################################################
+  #
+  # Proxy
+  #   We use Nginx as a reverse proxy to direct requests to the ports of the
+  #   correct services. This way we can hide the application's inner network.
+  #
+  ##############################################################################
+  proxy:
+    container_name: stocks-in-motion.proxy.development
+
+    # We can use volumes to copy our reverse proxy configuration into Nginx.
+    volumes:
+      # Use the development configuration to expose only what's necessary.
+      - ./proxy/development.conf:/etc/nginx/nginx.conf
+
+  ##############################################################################
+  #
+  # PostgreSQL Database
+  #   This is the service that serves the main database that houses the raw data
+  #   of the historic stock prices.
+  #
+  ##############################################################################
+  stockpricedb:
+    container_name: stocks-in-motion.stockpricedb.development
+
+    # We want to expose at port 8006.
+    ports:
+      - 8006:80
+
+    # The database does not have to communicate with our proxy.
+    networks:
+      - proxied
+
+  ##############################################################################
+  #
+  # Client
+  #   This is the service that serves all client-side files.
+  #
+  ##############################################################################
+  client:
+    container_name: stocks-in-motion.client.development
+
+    # We want to build from the development dockerfile in the client directory.
+    build:
+      dockerfile: development.dockerfile
+
+    # Pass on the environment variables to the client service.
+    environment:
+      - PORT=8000
+      - WDS_SOCKET_PORT=8005
+
+    # We want to bind the changes inside the container to a local folder so that
+    # we can update the code in real time.
+    volumes:
+      - ./client:/client
+
+  ##############################################################################
+  #
+  # PostgreSQL UI
+  #   This is the service that gives a visual user interface to the PostgreSQL
+  #   database.
+  #
+  ##############################################################################
+  pgadmin:
+    container_name: stocks-in-motion.pgadmin.development
+
+    # We always want to restart when things go wrong.
+    restart: always
+
+    # Get the PostgreSQL admin image from Docker Hub.
+    image: dpage/pgadmin4:6.17
+
+    # Pass on the environment variables to the ui service.
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+      - SCRIPT_NAME=/pgadmin
+
+    # The PostgreSQL UI needs a mounted volume for persistent storage of the
+    # connection details.
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+
+    # The pgadmin needs access to the database.
+    depends_on:
+      - stockpricedb
+
+    # Publicly expose the PostgreSQL UI.
+    ports:
+      - 80:80
+
+    # The interface needs to be both public and needs access to the database.
+    networks:
+      - proxied
+      - protected
+
+  ##############################################################################
+  #
+  # API
+  #   This is the service that serves all server-side requests.
+  #
+  ##############################################################################
+  api:
+    container_name: stocks-in-motion.api.development
+
+    # Make sure that the API is running in development mode.
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS=true
+      - NUGET_FALLBACK_PACKAGES=
+
+    # We want to build from the development dockerfile in the API directory.
+    build:
+      dockerfile: ./api/development.dockerfile
