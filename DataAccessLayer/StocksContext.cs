@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace DataAccessLayer.Models
 {
     public class StocksContext : DbContext
@@ -14,9 +16,9 @@ namespace DataAccessLayer.Models
         {
             string host = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
             int port = Int32.Parse(Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "8006");
-            string? database = Environment.GetEnvironmentVariable("DATABASE_NAME") ?? "stockpricedb";
-            string? userID = Environment.GetEnvironmentVariable("DATABASE_USERNAME") ?? "local";
-            string? password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD") ?? "secret";
+            string? database = Environment.GetEnvironmentVariable("DATABASE_NAME");
+            string? userID = Environment.GetEnvironmentVariable("DATABASE_USERNAME");
+            string? password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD");
 
             if (!optionsBuilder.IsConfigured)
             {
