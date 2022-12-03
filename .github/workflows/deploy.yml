@@ -58,6 +58,11 @@ jobs:
         USERNAME: ${{ secrets.USER }}
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.KEY }}
+        DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+        DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+        DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+        DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
+        DATASOURCE_KEY: ${{ secrets.DATASOURCE_KEY }}
         script: |
           cd /var/www/stocks-in-motion
           stocks production --build
